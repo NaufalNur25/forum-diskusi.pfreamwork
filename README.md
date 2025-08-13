@@ -18,6 +18,6 @@ dimana aplikasi harus dapat melakukan:
 - User dengan role (Admin) dapat menghapus postingan atau memblokir pengguna.
 
 ## Kelompok 3
-## • 223111008 - Ibnu Syambodo
-## • 223111013 - Moch Rizaldi Ananda Kurnia
-## • 223111015 - Naufal Nur Hafizh
+• [223111008 - Ibnu Syambodo](https://github.com/NaufalNur25/forum-diskusi.pfreamwork/tree/ibnu)
+• [223111013 - Moch Rizaldi Ananda Kurnia](https://github.com/NaufalNur25/forum-diskusi.pfreamwork/tree/rizaldi)
+• [223111015 - Naufal Nur Hafizh](https://github.com/NaufalNur25/forum-diskusi.pfreamwork/tree/naufal)
