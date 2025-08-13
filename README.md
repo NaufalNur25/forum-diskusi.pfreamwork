@@ -7,9 +7,9 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Project
+# About Project
 
-# Aplikasi Forum Diskusi Sederhana
+## Aplikasi Forum Diskusi Sederhana
 dimana aplikasi harus dapat melakukan:
 
 - Membuat topik baru (CRUD).
@@ -17,10 +17,7 @@ dimana aplikasi harus dapat melakukan:
 - Memberikan vote pada postingan.
 - User dengan role (Admin) dapat menghapus postingan atau memblokir pengguna.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-# Kelompok 3
-# • 223111008 - Ibnu Syambodo
-# • 223111013 - Moch Rizaldi Ananda Kurnia
-# • 223111015 - Naufal Nur Hafizh
+## Kelompok 3
+## • 223111008 - Ibnu Syambodo
+## • 223111013 - Moch Rizaldi Ananda Kurnia
+## • 223111015 - Naufal Nur Hafizh
