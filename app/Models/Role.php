@@ -11,4 +11,14 @@ class Role extends Model
 
     protected $table = 'roles';
     protected $primaryKey = 'role_id';
+
+    /**
+     * Get the ID of the 'User' role.
+     *
+     * @return string|null
+     */
+    public static function getRoleForUser(): ?string
+    {
+        return static::where('name', 'User')->value('role_id');
+    }
 }
