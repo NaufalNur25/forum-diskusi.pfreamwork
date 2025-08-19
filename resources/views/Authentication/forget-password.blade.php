@@ -29,20 +29,26 @@
                         Trouble logging in?
                     </h1>
                     <p class="text-gray-600 w-sm mx-auto">
-                        Enter your Email Address and we'll send you a link
-                        to get back into your account.
+                        Enter your Email Address and we'll send you a link to
+                        get back into your account.
                     </p>
                 </div>
 
-                <form class="space-y-6" method="POST" action="#">
-                    <input
-                        type="text"
-                        id="email"
-                        name="email"
-                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all duration-200 bg-gray-50 focus:bg-white"
-                        placeholder="Email address"
-                        required
-                    />
+                <form
+                    class="space-y-6"
+                    method="POST"
+                    action="{{ route('authentication.forget-password.action') }}"
+                >
+                    @csrf
+                    <div class="relative">
+                        <input
+                            type="text"
+                            id="email"
+                            name="email"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all duration-200 bg-gray-50 focus:bg-white"
+                            placeholder="Email address"
+                        />
+                    </div>
 
                     <button
                         type="submit"
@@ -65,7 +71,7 @@
                     <div class="mt-6 text-center">
                         <a
                             href="{{ route('authentication.register') }}"
-                            class="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+                            class="font-medium text-blue-600 hover:text-blue-500 transition"
                         >
                             Create new account
                         </a>
@@ -75,22 +81,6 @@
         </div>
 
         <script>
-            function togglePassword() {
-                const passwordInput = document.getElementById('password')
-                const eyeOpen = document.getElementById('eye-open')
-                const eyeClosed = document.getElementById('eye-closed')
-
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text'
-                    eyeOpen.classList.add('hidden')
-                    eyeClosed.classList.remove('hidden')
-                } else {
-                    passwordInput.type = 'password'
-                    eyeOpen.classList.remove('hidden')
-                    eyeClosed.classList.add('hidden')
-                }
-            }
-
             document.querySelectorAll('input').forEach((input) => {
                 input.addEventListener('focus', function () {
                     this.parentElement.classList.add('animate-pulse')

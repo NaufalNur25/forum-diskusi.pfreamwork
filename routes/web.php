@@ -3,9 +3,15 @@
 use App\Http\Controllers\Authentication as AuthService;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function() {
+Route::get('/', function () {
     return view('home');
 })->name('home');
+
+Route::get('/api/csrf', function (\Illuminate\Http\Request $request) {
+    return response()->json([
+        'csrf_token' => $request->session()->token()
+    ]);
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthService\LoginController::class, 'view'])->name('authentication.login');
@@ -13,8 +19,10 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthService\RegisterController::class, 'view'])->name('authentication.register');
     Route::post('/register', [AuthService\RegisterController::class, 'register'])->name('authentication.register.action');
     Route::get('/forget-password', [AuthService\ForgetPasswordController::class, 'view'])->name('authentication.forget-password');
+    Route::post('/forget-password', [AuthService\ForgetPasswordController::class, 'sendLinkToMail'])->name('authentication.forget-password.action');
+    Route::get('/reset-password/{token}', [AuthService\ResetPasswordController::class, 'view'])->name('authentication.reset-password');
+    Route::post('/reset-password', [AuthService\ResetPasswordController::class, 'resetPassword'])->name('authentication.reset-password.action');
 });
 
 Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');
-Route::middleware('')->group(function () {
-});
+Route::middleware('')->group(function () {});
