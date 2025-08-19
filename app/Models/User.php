@@ -51,44 +51,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    /**
-     * Get the role that owns the user.
-     */
-    public function role(): BelongsTo
-    {
-        return $this->belongsTo(Role::class, 'role_id', 'role_id');
-    }
-
-    /**
-     * Get the posts for the user.
-     */
-    public function posts(): HasMany
-    {
-        return $this->hasMany(Post::class, 'user_id', 'user_id');
-    }
-
-    /**
-     * Get the answers for the user.
-     */
-    public function answers(): HasMany
-    {
-        return $this->hasMany(Answer::class, 'user_id', 'user_id');
-    }
-
-    /**
-     * Get the interactions for the user.
-     */
-    public function interactions(): HasMany
-    {
-        return $this->hasMany(Interaction::class, 'user_id', 'user_id');
-    }
-
-    /**
-     * Get all of the user's comments.
-     */
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class, 'user_id', 'user_id');
-    }
 }

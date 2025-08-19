@@ -25,6 +25,22 @@
                     </div>
                 </div>
             @endif
+            @if (session('success'))
+                <div
+                    class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50"
+                    role="alert"
+                >
+                    <x-gmdi-check-circle-r
+                        class="shrink-0 inline w-4 h-4 me-3"
+                        aria-hidden="true"
+                    />
+                    <span class="sr-only">Info</span>
+                    <div>
+                        <span class="font-medium">Success alert!</span>
+                        {{ session('success') }}
+                    </div>
+                </div>
+            @endif
 
             <div
                 class="bg-white rounded-2xl shadow-xl border border-gray-100 p-8"
