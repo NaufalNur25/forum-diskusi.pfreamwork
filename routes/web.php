@@ -33,4 +33,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
     Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
+
+    Route::post('/posts/upload-trix-image', [PostController::class, 'uploadImage'])->name('posts.upload-image');
 });
