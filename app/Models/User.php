@@ -51,4 +51,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    protected static function hasEmail(string $email): bool | self
+    {
+        $user = self::where('email', $email)->first();
+
+        return $user ?? (bool) $user;
+    }
 }
