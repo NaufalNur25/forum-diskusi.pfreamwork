@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\AnswerController;
+use App\Http\Middleware\AuthenticationMiddleware;
 
 Route::get('/', function () {
     return view('home');
@@ -18,6 +19,7 @@ Route::get('/api/csrf', function (\Illuminate\Http\Request $request) {
 });
 
 Route::middleware('guest')->group(function () {
+    # ROLE: User
     Route::get('/login', [AuthService\LoginController::class, 'view'])->name('authentication.login');
     Route::post('/login', [AuthService\LoginController::class, 'login'])->name('authentication.login.action');
     Route::get('/register', [AuthService\RegisterController::class, 'view'])->name('authentication.register');
@@ -27,9 +29,11 @@ Route::middleware('guest')->group(function () {
     Route::get('/reset-password/{token}', [AuthService\ResetPasswordController::class, 'view'])->name('authentication.reset-password');
     Route::post('/reset-password', [AuthService\ResetPasswordController::class, 'resetPassword'])->name('authentication.reset-password.action');
 
+    # ROLE: Admin
+    Route::get('/login/privilege/{role}', [AuthService\LoginController::class, 'view'])->name('admin.login');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(AuthenticationMiddleware::class)->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
