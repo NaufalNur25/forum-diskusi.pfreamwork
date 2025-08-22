@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\Authentication as AuthService;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\InteractionController;
+use App\Http\Controllers\AnswerController;
 
 Route::get('/', function () {
     return view('home');
@@ -22,7 +26,26 @@ Route::middleware('guest')->group(function () {
     Route::post('/forget-password', [AuthService\ForgetPasswordController::class, 'sendLinkToMail'])->name('authentication.forget-password.action');
     Route::get('/reset-password/{token}', [AuthService\ResetPasswordController::class, 'view'])->name('authentication.reset-password');
     Route::post('/reset-password', [AuthService\ResetPasswordController::class, 'resetPassword'])->name('authentication.reset-password.action');
+
 });
 
-Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');
-Route::middleware('')->group(function () {});
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');
+
+    Route::get('/posts', [PostController::class, 'index'])->name('posts.index'); // Menampilkan semua post
+    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create'); // Menampilkan form
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store'); // Menyimpan post baru
+
+
+    Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+    Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
+
+    Route::post('/posts/{post}/interact', [InteractionController::class, 'store'])->name('posts.interact');
+
+    // Ganti route answers yang lama dengan ini
+    Route::post('/comments/{comment}/answers', [AnswerController::class, 'store'])->name('answers.store');
+});

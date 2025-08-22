@@ -28,7 +28,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             return redirect()
-                ->route('home', status: Response::HTTP_MOVED_PERMANENTLY);
+                ->route('posts.index', status: Response::HTTP_MOVED_PERMANENTLY);
         }
 
         throw ValidationException::withMessages([
