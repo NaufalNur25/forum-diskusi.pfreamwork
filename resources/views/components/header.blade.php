@@ -3,13 +3,14 @@
         <div class="flex justify-between items-center h-16">
             <div class="flex items-center gap-6 flex-1">
                 <img src="{{ asset('images/logo-non-bg.png') }}" alt="Logo NerdU" class="w-16 h-16">
-                <form action="{{ route('home') }}" method="GET" class="hidden md:block w-full max-w-sm">
+                <form action="{{ route('posts.index') }}" method="GET" class="hidden md:block w-full max-w-sm">
                     <div class="relative">
                         <input
                             type="text"
                             name="search"
                             placeholder="Cari..."
                             autocomplete="off"
+                            value="{{ request('search') }}"
                             class="w-full border rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700"
                         />
                         <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-gray-400">
@@ -24,7 +25,7 @@
             <div class="hidden md:flex items-center justify-center gap-5">
                 @auth
                     <a
-                        href="{{ route('profile.view') }}"
+                        href="{{ route('Profile.view') }}"
                         class="flex items-center w-fit py-3 px-4 rounded-xl shadow-sm font-semibold text-gray-800 cursor-pointer hover:bg-blue-50"
                     >
                         <x-gmdi-person class="w-5 h-5 mr-2" />

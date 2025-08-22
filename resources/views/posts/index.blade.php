@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('Layouts.app')
 
 @section('content')
     <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
@@ -18,12 +18,6 @@
         <div class="bg-white p-4 rounded-xl shadow-sm mb-6">
             <form action="{{ route('posts.index') }}" method="GET"
                 class="flex flex-col sm:flex-row items-center gap-4">
-
-                <div class="flex-grow w-full sm:w-auto">
-                    <input type="text" name="search" placeholder="Cari berdasarkan judul..."
-                        value="{{ request('search') }}"
-                        class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
 
                 <div class="w-full sm:w-56">
                     <select name="category"

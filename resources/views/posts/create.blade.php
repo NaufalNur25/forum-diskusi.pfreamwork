@@ -1,39 +1,14 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buat Pertanyaan Baru</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-50 font-sans">
-    <nav class="bg-blue-600 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex-shrink-0">
-                    <a href="#" class="text-white text-2xl font-bold">MyApp</a>
-                </div>
+@extends('Layouts.app')
 
-                <div class="flex items-center space-x-4">
-                    <span class="text-white hidden sm:block">
-                        Selamat datang, <strong class="font-semibold">{{ Auth::user()->name }}</strong>
-                    </span>
-                    <form method="POST" action="{{ route('authentication.logout') }}">
-                        @csrf
-                        <button type="submit"
-                            class="bg-white text-blue-600 font-semibold px-4 py-2 rounded-lg shadow-sm hover:bg-blue-50 transition-colors duration-200">
-                            Logout
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </nav>
+@section('title', 'Buat Pertanyaan Baru')
 
+@section('content')
     <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-xl shadow-md overflow-hidden">
             <div class="p-6 sm:p-8">
                 <h1 class="text-2xl font-bold text-slate-800 mb-6">Buat Pertanyaan Baru</h1>
+
+                {{-- Form untuk membuat pertanyaan baru --}}
                 <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data" class="space-y-6">
                     @csrf
                     <div>
@@ -71,12 +46,11 @@
                     </div>
 
                     <div class="flex items-center justify-end space-x-4 pt-4">
-                        <a href="{{ route('posts.index') }}" class="bg-slate-200 text-slate-800 font-semibold px-5 py-2 rounded-lg ...">Batal</a>
-                        <button type="submit" class="bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg ...">Buat Pertanyaan</button>
+                        <a href="{{ route('posts.index') }}" class="bg-slate-200 text-slate-800 font-semibold px-5 py-2 rounded-lg shadow-sm hover:bg-slate-300 transition-colors">Batal</a>
+                        <button type="submit" class="bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg shadow-sm hover:bg-blue-700 transition-colors">Buat Pertanyaan</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</body>
-</html>
+@endsection

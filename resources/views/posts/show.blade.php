@@ -1,55 +1,8 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('Layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $post->question }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'sans': ['Inter', 'sans-serif']
-                    },
-                }
-            }
-        }
-    </script>
-</head>
-
-<body class="bg-slate-50 font-sans">
-    <nav class="bg-blue-600 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-            <a href="{{ route('posts.index') }}"
-                class="text-white font-semibold hover:text-blue-200 flex items-center space-x-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                        clip-rule="evenodd" />
-                </svg>
-                <span>Kembali</span>
-            </a>
-            <div class="flex items-center space-x-4">
-                <span class="text-white hidden sm:block">
-                    Selamat datang, <strong>{{ Auth::user()->name }}</strong>
-                </span>
-                <form method="POST" action="{{ route('authentication.logout') }}">
-                    @csrf
-                    <button type="submit"
-                        class="bg-white text-blue-600 font-semibold px-4 py-2 rounded-lg shadow-sm hover:bg-blue-50">
-                        Logout
-                    </button>
-                </form>
-            </div>
-        </div>
-    </nav>
-
+@section('content')
     <main class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8 space-y-6">
+        {{-- Bagian Detail Pertanyaan --}}
         <section class="bg-white rounded-xl shadow-md overflow-hidden">
             @if ($post->content)
                 <div class="w-full aspect-video bg-slate-200">
@@ -97,6 +50,7 @@
             </div>
         </section>
 
+        {{-- Bagian Komentar --}}
         <section class="bg-white rounded-xl shadow-md overflow-hidden">
             <div class="p-6">
                 <h2 class="text-xl font-semibold text-slate-800 mb-4">{{ $totalInteractionCount }} Komentar & Balasan</h2>
@@ -135,6 +89,4 @@
             document.getElementById('reply-form-' + id).classList.toggle('hidden');
         }
     </script>
-</body>
-
-</html>
+@endsection

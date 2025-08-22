@@ -8,9 +8,10 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Middleware\AuthenticationMiddleware;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
-    return view('home');
+    return redirect()->route('posts.index');
 })->name('home');
 
 Route::get('/api/csrf', function (\Illuminate\Http\Request $request) {
@@ -53,7 +54,7 @@ Route::middleware(AuthenticationMiddleware::class)->group(function () {
     Route::post('/posts/{post}/interact', [InteractionController::class, 'store'])->name('posts.interact');
 
     Route::post('/comments/{comment}/answers', [AnswerController::class, 'store'])->name('answers.store');
-    Route::get('/profile', [ProfileController::class, 'view'])->name('profile.view');
+    Route::get('/profile', [ProfileController::class, 'view'])->name('Profile.view');
 });
 Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');
-Route::middleware('')->group(function () {});
+
