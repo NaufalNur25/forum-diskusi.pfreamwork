@@ -9,6 +9,7 @@ use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Middleware\AuthenticationMiddleware;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\AdminMiddleware;
 
 Route::get('/', function () {
     return redirect()->route('posts.index');
@@ -19,6 +20,8 @@ Route::get('/api/csrf', function (\Illuminate\Http\Request $request) {
         'csrf_token' => $request->session()->token()
     ]);
 });
+
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 
 Route::middleware('guest')->group(function () {
     # ROLE: User
@@ -36,14 +39,18 @@ Route::middleware('guest')->group(function () {
     Route::post('/login/privilege', [AdminService\Authentication\LoginController::class, 'login'])->name('admin.authentication.login.action');
 });
 
+Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
+    Route::get('/dashboard', [AdminService\Authentication\LoginController::class, 'login'])->name('admin.authentication.login.action');
+});
+
 Route::middleware(AuthenticationMiddleware::class)->group(function () {
+    # PAGE: User
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
     Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');
 
-    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 
@@ -57,4 +64,3 @@ Route::middleware(AuthenticationMiddleware::class)->group(function () {
     Route::get('/profile', [ProfileController::class, 'view'])->name('Profile.view');
 });
 Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');
-
