@@ -20,6 +20,11 @@ class Role extends Model
         return static::where('name', 'User')->value('role_id');
     }
 
+    public static function getRoleForAdmin(): ?string
+    {
+        return static::where('name', 'Admin')->value('role_id');
+    }
+
         public function users(): HasMany
     {
         return $this->hasMany(User::class, 'role_id', 'role_id');

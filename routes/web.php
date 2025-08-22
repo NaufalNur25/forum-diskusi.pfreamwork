@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Authentication as AuthService;
+use App\Http\Controllers\Admin as AdminService;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
@@ -30,7 +31,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/reset-password', [AuthService\ResetPasswordController::class, 'resetPassword'])->name('authentication.reset-password.action');
 
     # ROLE: Admin
-    Route::get('/login/privilege/{role}', [AuthService\LoginController::class, 'view'])->name('admin.login');
+    Route::get('/login/privilege/{role}', [AdminService\Authentication\LoginController::class, 'view'])->name('admin.authentication.login');
+    Route::post('/login/privilege', [AdminService\Authentication\LoginController::class, 'login'])->name('admin.authentication.login.action');
 });
 
 Route::middleware(AuthenticationMiddleware::class)->group(function () {
