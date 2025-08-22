@@ -7,9 +7,9 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\AnswerController;
-use App\Http\Middleware\AuthenticationMiddleware;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\UserMiddleware;
 
 Route::get('/', function () {
     return redirect()->route('posts.index');
@@ -40,15 +40,11 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
-    Route::get('/dashboard', [AdminService\Authentication\LoginController::class, 'login'])->name('admin.authentication.login.action');
+    Route::get('/dashboard', [AdminService\Dashboard::class, 'index'])->name('admin.dashboard');
 });
 
-Route::middleware(AuthenticationMiddleware::class)->group(function () {
+Route::middleware(UserMiddleware::class)->group(function () {
     # PAGE: User
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
     Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');
 
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
