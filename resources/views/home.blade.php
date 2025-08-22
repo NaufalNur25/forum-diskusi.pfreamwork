@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('Layouts.app')
 
 @section('content')
     <section class="bg-gradient-to-b from-blue-50 to-white py-20 h-screen">
