@@ -37,7 +37,7 @@ class LoginController extends Controller
                 Auth::login($user, $remember);
 
                 return redirect()
-                    ->route('posts.index', status: Response::HTTP_MOVED_PERMANENTLY);
+                    ->route('admin.dashboard', status: Response::HTTP_MOVED_PERMANENTLY);
             }
         }
 
