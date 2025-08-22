@@ -17,6 +17,8 @@ return new class extends Migration
             $table->uuid('post_id');
             $table->boolean('like')->default(false);
             $table->timestamps();
+
+            $table->unique(['user_id', 'post_id']);
         });
     }
 

@@ -4,6 +4,8 @@ use App\Http\Controllers\Authentication as AuthService;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\InteractionController;
+use App\Http\Controllers\AnswerController;
 
 Route::get('/', function () {
     return view('home');
@@ -21,7 +23,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthService\RegisterController::class, 'view'])->name('authentication.register');
     Route::post('/register', [AuthService\RegisterController::class, 'register'])->name('authentication.register.action');
     Route::get('/forget-password', [AuthService\ForgetPasswordController::class, 'view'])->name('authentication.forget-password');
-Route::post('/forget-password', [AuthService\ForgetPasswordController::class, 'sendLinkToMail'])->name('authentication.forget-password.action');
+    Route::post('/forget-password', [AuthService\ForgetPasswordController::class, 'sendLinkToMail'])->name('authentication.forget-password.action');
     Route::get('/reset-password/{token}', [AuthService\ResetPasswordController::class, 'view'])->name('authentication.reset-password');
     Route::post('/reset-password', [AuthService\ResetPasswordController::class, 'resetPassword'])->name('authentication.reset-password.action');
 
@@ -42,5 +44,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
     Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
 
-    Route::post('/posts/upload-trix-image', [PostController::class, 'uploadImage'])->name('posts.upload-image');
+    Route::post('/posts/{post}/interact', [InteractionController::class, 'store'])->name('posts.interact');
+
+    // Ganti route answers yang lama dengan ini
+    Route::post('/comments/{comment}/answers', [AnswerController::class, 'store'])->name('answers.store');
 });

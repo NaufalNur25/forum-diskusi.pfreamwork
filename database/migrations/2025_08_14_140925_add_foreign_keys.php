@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignUuid('category_id')->change()->constrained('categories', 'category_id');
         });
 
-        Schema::table('answers', function (Blueprint $table) {
+        Schema::table('comments', function (Blueprint $table) {
             $table->foreignUuid('user_id')->change()->constrained('users', 'user_id');
             $table->foreignUuid('post_id')->change()->constrained('posts', 'post_id');
         });
@@ -29,6 +29,12 @@ return new class extends Migration
             $table->foreignUuid('user_id')->change()->constrained('users', 'user_id');
             $table->foreignUuid('post_id')->change()->constrained('posts', 'post_id');
         });
+
+         Schema::table('answers', function (Blueprint $table) {
+        $table->foreignUuid('user_id')->change()->constrained('users', 'user_id');
+        $table->foreignUuid('comment_id')->change()->constrained('comments', 'comment_id');
+    });
+
     }
 
     /**

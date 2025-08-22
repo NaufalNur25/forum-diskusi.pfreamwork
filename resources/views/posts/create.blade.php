@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buat Pertanyaan Baru</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    {{-- (kode head lainnya tidak berubah) --}}
 </head>
 <body class="bg-slate-50 font-sans">
     <nav class="bg-blue-600 shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <!-- Logo/Brand -->
                 <div class="flex-shrink-0">
                     <a href="#" class="text-white text-2xl font-bold">MyApp</a>
                 </div>
 
-                <!-- Info Pengguna dan Tombol Logout -->
                 <div class="flex items-center space-x-4">
                     <span class="text-white hidden sm:block">
                         Selamat datang, <strong class="font-semibold">{{ Auth::user()->name }}</strong>
@@ -41,7 +38,6 @@
                     @csrf
                     <div>
                         <label for="question" class="block text-sm font-medium text-slate-700">Pertanyaan</label>
-                        {{-- PERBAIKAN DI BAWAH INI --}}
                         <input type="text" name="question" id="question" value="{{ old('question') }}" required
                                class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm {{ $errors->has('question') ? 'border-red-500' : 'border-slate-300' }}">
                         @error('question')
@@ -51,7 +47,6 @@
 
                     <div>
                         <label for="category_id" class="block text-sm font-medium text-slate-700">Kategori</label>
-                        {{-- PERBAIKAN DI BAWAH INI --}}
                         <select name="category_id" id="category_id" required
                                 class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm {{ $errors->has('category_id') ? 'border-red-500' : 'border-slate-300' }}">
                             <option value="">-- Pilih Kategori --</option>

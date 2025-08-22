@@ -7,51 +7,41 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Answer extends Model
 {
     use HasFactory, HasUuids;
 
-    /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
     protected $primaryKey = 'answer_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'user_id',
-        'post_id',
+        'comment_id',
+        'parent_id',
         'answer',
         'content',
     ];
 
-    /**
-     * Get the user that owns the answer.
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 
-    /**
-     * Get the post that the answer belongs to.
-     */
-    public function post(): BelongsTo
+    public function comment()
     {
-        return $this->belongsTo(Post::class, 'post_id', 'post_id');
+        return $this->belongsTo(Comment::class, 'comment_id');
     }
 
-    /**
-     * Get all of the answer's comments.
-     */
-    public function comments(): MorphMany
+    public function parent(): BelongsTo
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->belongsTo(Answer::class, 'parent_id', 'answer_id');
+    }
+
+    public function replies(): HasMany
+    {
+        return $this->hasMany(Answer::class, 'parent_id', 'answer_id');
     }
 }
