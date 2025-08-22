@@ -36,9 +36,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');
 
-    Route::get('/posts', [PostController::class, 'index'])->name('posts.index'); // Menampilkan semua post
-    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create'); // Menampilkan form
-    Route::post('/posts', [PostController::class, 'store'])->name('posts.store'); // Menyimpan post baru
+    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 
 
     Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
@@ -46,6 +46,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/posts/{post}/interact', [InteractionController::class, 'store'])->name('posts.interact');
 
-    // Ganti route answers yang lama dengan ini
     Route::post('/comments/{comment}/answers', [AnswerController::class, 'store'])->name('answers.store');
+    Route::get('/profile', [ProfileController::class, 'view'])->name('profile.view');
 });
+Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');
+Route::middleware('')->group(function () {});
