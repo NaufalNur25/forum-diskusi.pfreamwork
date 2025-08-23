@@ -81,5 +81,7 @@ Route::middleware(UserMiddleware::class)->group(function () {
 
     Route::post('/comments/{comment}/answers', [AnswerController::class, 'store'])->name('answers.store');
     Route::get('/profile', [ProfileController::class, 'view'])->name('Profile.view');
+    Route::get('/profile/settings', [ProfileController::class, 'edit'])->name('Profile.edit');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('Profile.update');
 });
 Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');
