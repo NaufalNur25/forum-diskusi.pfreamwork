@@ -10,44 +10,47 @@ use Illuminate\Support\Facades\Auth;
 class PostController extends Controller
 {
     public function index(Request $request)
-    {
-        $categories = Category::all();
-        $query = Post::query();
+{
+    $categories = Category::all();
+    $query = Post::query();
 
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where('question', 'like', "%{$search}%");
-        }
-
-        if ($request->filled('category')) {
-            $category = $request->category;
-            $query->where('category_id', $category);
-        }
-        $query->withCount(['likes', 'comments']);
-        $sort = $request->input('sort', 'latest');
-
-        switch ($sort) {
-            case 'oldest':
-                $query->oldest();
-                break;
-            case 'most_liked':
-                $query->orderByDesc('likes_count');
-                break;
-            case 'most_commented':
-                $query->orderByDesc('comments_count');
-                break;
-            default:
-                $query->latest();
-                break;
-        }
-
-        $posts = $query->with('user', 'category')->paginate(10);
-
-        return view('posts.index', [
-            'posts' => $posts,
-            'categories' => $categories
-        ]);
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where('question', 'like', "%{$search}%");
     }
+
+    if ($request->filled('category')) {
+        $category = $request->category;
+        $query->where('category_id', $category);
+    }
+
+    // TAMBAHKAN 'dislikes' DI SINI
+    $query->withCount(['likes', 'comments', 'dislikes']);
+    
+    $sort = $request->input('sort', 'latest');
+
+    switch ($sort) {
+        case 'oldest':
+            $query->oldest();
+            break;
+        case 'most_liked':
+            $query->orderByDesc('likes_count');
+            break;
+        case 'most_commented':
+            $query->orderByDesc('comments_count');
+            break;
+        default:
+            $query->latest();
+            break;
+    }
+
+    $posts = $query->with('user', 'category')->paginate(10);
+
+    return view('posts.index', [
+        'posts' => $posts,
+        'categories' => $categories
+    ]);
+}
 
 
     public function store(Request $request)
