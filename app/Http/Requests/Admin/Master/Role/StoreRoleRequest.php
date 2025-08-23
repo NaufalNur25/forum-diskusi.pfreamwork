@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Admin\Master\Category;
+namespace App\Http\Requests\Admin\Master\Role;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class CreateCategoryRequest extends FormRequest
+class StoreRoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class CreateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'unique:categories,name']
+            'name' => ['required', 'unique:roles,name']
         ];
     }
 }

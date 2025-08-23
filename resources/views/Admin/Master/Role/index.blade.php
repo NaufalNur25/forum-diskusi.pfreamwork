@@ -37,7 +37,7 @@
                         <span
                             class="ml-1 text-sm font-medium text-gray-500 md:ml-2"
                         >
-                            Master Category
+                            Master Role
                         </span>
                     </div>
                 </li>
@@ -46,13 +46,11 @@
 
         <div class="mb-6 flex justify-between items-center">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900">
-                    Master Category
-                </h1>
-                <p class="text-gray-600 mt-2">Category Overview</p>
+                <h1 class="text-2xl font-bold text-gray-900">Master Role</h1>
+                <p class="text-gray-600 mt-2">Role Overview</p>
             </div>
             <a
-                href="{{ route('admin.master.category.create') }}"
+                href="{{ route('admin.master.role.create') }}"
                 class="inline-flex h-fit mt-auto items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
                 <svg
@@ -68,7 +66,7 @@
                         d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                     ></path>
                 </svg>
-                Add new Category
+                Add new Role
             </a>
         </div>
 
@@ -91,18 +89,13 @@
                         <th
                             class="px-6 py-4 text-center text-sm font-medium text-white uppercase tracking-wider w-32"
                         >
-                            Related Posts
-                        </th>
-                        <th
-                            class="px-6 py-4 text-center text-sm font-medium text-white uppercase tracking-wider w-32"
-                        >
                             Action
                         </th>
                     </tr>
                 </thead>
 
                 <tbody class="bg-white divide-y divide-gray-100">
-                    @forelse ($categories ?? [] as $index => $category)
+                    @forelse ($roles ?? [] as $index => $role)
                         <tr
                             class="{{ $loop->even ? 'bg-blue-50' : 'bg-white' }} hover:{{ $loop->even ? 'bg-blue-100' : 'bg-gray-50' }} transition-colors duration-200"
                         >
@@ -114,23 +107,16 @@
                             <td
                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
                             >
-                                {{ $category->name }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-center">
-                                <span
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
-                                >
-                                    {{ $category->posts_count ?? 0 }} Posts
-                                </span>
+                                {{ $role->name }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                 <div
                                     class="flex items-center justify-center space-x-2"
                                 >
                                     <a
-                                        href="{{ route('admin.master.category.edit', $category) }}"
+                                        href="{{ route('admin.master.role.edit', $role) }}"
                                         class="inline-flex items-center justify-center w-8 h-8 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
-                                        title="Edit Category"
+                                        title="Edit Role"
                                     >
                                         <svg
                                             class="w-4 h-4"
@@ -148,16 +134,16 @@
                                     </a>
 
                                     <form
-                                        action="{{ route('admin.master.category.destroy', $category) }}"
+                                        action="{{ route('admin.master.role.destroy', $role) }}"
                                         method="POST"
-                                        onsubmit="return confirm('Are you sure you want to delete this category?')"
+                                        onsubmit="return confirm('Are you sure you want to delete this role?')"
                                     >
                                         @csrf
                                         @method('DELETE')
                                         <button
                                             type="submit"
                                             class="inline-flex items-center justify-center w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                                            title="Delete Category"
+                                            title="Delete Role"
                                         >
                                             <svg
                                                 class="w-4 h-4"
@@ -202,11 +188,11 @@
                                         No Record Found
                                     </h3>
                                     <p class="text-gray-500 text-sm mb-4">
-                                        There are no categories available yet.
-                                        Start by adding a new category.
+                                        There are no roles available yet. Start
+                                        by adding a new role.
                                     </p>
                                     <a
-                                        href="{{ route('admin.master.category.create') }}"
+                                        href="{{ route('admin.master.role.create') }}"
                                         class="inline-flex items-center px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-md transition-colors duration-200"
                                     >
                                         <svg
@@ -222,7 +208,7 @@
                                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                                             ></path>
                                         </svg>
-                                        Add new category
+                                        Add new role
                                     </a>
                                 </div>
                             </td>
@@ -234,16 +220,15 @@
 
         <div class="mt-6 flex justify-between items-center">
             <div class="text-sm text-gray-700">
-                @if ($categories->total() > 0)
-                    Showing {{ $categories->firstItem() }} -
-                    {{ $categories->lastItem() }} from
-                    {{ $categories->total() }} categories
+                @if ($roles->total() > 0)
+                    Showing {{ $roles->firstItem() }} -
+                    {{ $roles->lastItem() }} from {{ $roles->total() }} roles
                 @else
-                        No category data
+                        No role data
                 @endif
             </div>
             <div>
-                {{ $categories->links('templates.custom-pagination') }}
+                {{ $roles->links('templates.custom-pagination') }}
             </div>
         </div>
     </div>

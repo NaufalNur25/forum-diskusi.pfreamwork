@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <!-- Breadcrumb -->
         <nav class="flex mb-6" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
@@ -68,17 +67,16 @@
             </ol>
         </nav>
 
-        <!-- Header -->
         <div class="mb-6">
             <h1 class="text-2xl font-bold text-gray-900">Edit Category</h1>
-            <p class="text-gray-600 mt-2">Update informasi kategori</p>
+            <p class="text-gray-600 mt-2">Update category information</p>
         </div>
 
         <!-- Form Card -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h2 class="text-lg font-medium text-gray-900">
-                    Informasi Category
+                    Category Information
                 </h2>
             </div>
 
@@ -90,7 +88,6 @@
                 @csrf
                 @method('PUT')
 
-                <!-- Category Name -->
                 <div class="mb-6">
                     <label
                         for="name"
@@ -125,7 +122,6 @@
                     @enderror
                 </div>
 
-                <!-- Action Buttons -->
                 <div
                     class="flex items-center justify-between pt-6 border-t border-gray-200"
                 >
@@ -168,7 +164,7 @@
                                     d="M6 18L18 6M6 6l12 12"
                                 ></path>
                             </svg>
-                            Batal
+                            Cancle
                         </a>
 
                         <button
@@ -195,7 +191,6 @@
             </form>
         </div>
 
-        <!-- Category Info Card (Optional) -->
         <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div class="flex items-start">
                 <svg
@@ -211,7 +206,7 @@
                 </svg>
                 <div>
                     <h3 class="text-sm font-medium text-blue-800">
-                        Informasi Category
+                        Category Information
                     </h3>
                     <div class="mt-2 text-sm text-blue-700">
                         <ul class="list-disc list-inside space-y-1">
@@ -220,19 +215,19 @@
                                 <strong>{{ $category->name }}</strong>
                             </li>
                             <li>
-                                Jumlah Post:
+                                Number of Posts:
                                 <strong>
                                     {{ $category->posts_count ?? 0 }} Posts
                                 </strong>
                             </li>
                             <li>
-                                Dibuat:
+                                Created At:
                                 <strong>
                                     {{ $category->created_at ? $category->created_at->format('d M Y, H:i') : '-' }}
                                 </strong>
                             </li>
                             <li>
-                                Terakhir Update:
+                                Last Updated:
                                 <strong>
                                     {{ $category->updated_at ? $category->updated_at->format('d M Y, H:i') : '-' }}
                                 </strong>

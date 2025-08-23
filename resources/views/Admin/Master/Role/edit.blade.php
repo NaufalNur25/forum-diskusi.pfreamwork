@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <!-- Breadcrumb -->
         <nav class="flex mb-6" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
@@ -24,7 +23,7 @@
                 </li>
                 <li>
                     <a
-                        href="{{ route('admin.master.category') }}"
+                        href="{{ route('admin.master.role') }}"
                         class="flex items-center"
                     >
                         <svg
@@ -41,7 +40,7 @@
                         <span
                             class="ml-1 text-sm font-medium text-gray-500 hover:text-blue-600 md:ml-2"
                         >
-                            Master Category
+                            Master Role
                         </span>
                     </a>
                 </li>
@@ -61,46 +60,46 @@
                         <span
                             class="ml-1 text-sm font-medium text-gray-500 md:ml-2"
                         >
-                            Create Category
+                            Edit Role
                         </span>
                     </div>
                 </li>
             </ol>
         </nav>
 
-        <!-- Header -->
         <div class="mb-6">
-            <h1 class="text-2xl font-bold text-gray-900">Create Category</h1>
-            <p class="text-gray-600 mt-2">Create new category</p>
+            <h1 class="text-2xl font-bold text-gray-900">Edit Role</h1>
+            <p class="text-gray-600 mt-2">Update role information</p>
         </div>
 
-        <!-- Form Card -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200">
             <div class="px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-medium text-gray-900">Category</h2>
+                <h2 class="text-lg font-medium text-gray-900">
+                    Role Information
+                </h2>
             </div>
 
             <form
-                action="{{ route('admin.master.category.store') }}"
+                action="{{ route('admin.master.role.update', $role) }}"
                 method="POST"
                 class="p-6"
             >
                 @csrf
+                @method('PUT')
 
-                <!-- Category Name -->
                 <div class="mb-6">
                     <label
                         for="name"
                         class="block text-sm font-medium text-gray-700 mb-2"
                     >
-                        Category Name
+                        Role Name
                         <span class="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
                         id="name"
                         name="name"
-                        value="{{ old('name') }}"
+                        value="{{ old('name', $role->name) }}"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 @error('name') border-red-500 focus:ring-red-500 focus:border-red-500 @enderror"
                     />
 
@@ -122,7 +121,6 @@
                     @enderror
                 </div>
 
-                <!-- Action Buttons -->
                 <div
                     class="flex items-center justify-between pt-6 border-t border-gray-200"
                 >
@@ -149,7 +147,7 @@
 
                     <div class="flex items-center space-x-3">
                         <a
-                            href="{{ route('admin.master.category') }}"
+                            href="{{ route('admin.master.role') }}"
                             class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 bg-white rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
                         >
                             <svg
@@ -185,35 +183,76 @@
                                     d="M5 13l4 4L19 7"
                                 ></path>
                             </svg>
-                            Create New Category
+                            Update Role
                         </button>
                     </div>
                 </div>
             </form>
         </div>
 
-        @if (session('error'))
-            <div
-                id="error-message"
-                class="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-lg z-50"
-            >
-                <div class="flex items-center">
-                    <svg
-                        class="w-4 h-4 mr-2"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                    >
-                        <path
-                            fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                            clip-rule="evenodd"
-                        ></path>
-                    </svg>
-                    {{ session('error') }}
+        <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div class="flex items-start">
+                <svg
+                    class="w-5 h-5 text-blue-400 mt-0.5 mr-3"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                        clip-rule="evenodd"
+                    ></path>
+                </svg>
+                <div>
+                    <h3 class="text-sm font-medium text-blue-800">
+                        Role Information
+                    </h3>
+                    <div class="mt-2 text-sm text-blue-700">
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>
+                                Role:
+                                <strong>{{ $role->name }}</strong>
+                            </li>
+                            <li>
+                                Created At:
+                                <strong>
+                                    {{ $role->created_at ? $role->created_at->format('d M Y, H:i') : '-' }}
+                                </strong>
+                            </li>
+                            <li>
+                                Last Updated:
+                                <strong>
+                                    {{ $role->updated_at ? $role->updated_at->format('d M Y, H:i') : '-' }}
+                                </strong>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        @endif
+        </div>
     </div>
+
+    @if (session('error'))
+        <div
+            id="error-message"
+            class="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-lg z-50"
+        >
+            <div class="flex items-center">
+                <svg
+                    class="w-4 h-4 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd"
+                    ></path>
+                </svg>
+                {{ session('error') }}
+            </div>
+        </div>
+    @endif
 
     <script>
         setTimeout(function () {

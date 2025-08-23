@@ -84,7 +84,8 @@
                             Role
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-center">
-                            <button
+                            <a
+                                href="{{ route('admin.master.role') }}"
                                 class="inline-flex items-center justify-center w-8 h-8 bg-green-500 hover:bg-green-600 text-white rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                             >
                                 <svg
@@ -100,7 +101,7 @@
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                                     ></path>
                                 </svg>
-                            </button>
+                            </a>
                         </td>
                     </tr>
                 </tbody>
