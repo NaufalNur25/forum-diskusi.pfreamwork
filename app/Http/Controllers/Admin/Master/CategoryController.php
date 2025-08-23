@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin\Master;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Master\Category\CreateCategoryRequest;
-use App\Http\Requests\Admin\Master\Category\UpdateCategoryRequest;
+use App\Http\Requests\Admin\Master\Category\StoreCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Response;
 
@@ -22,7 +21,7 @@ class CategoryController extends Controller
         return view('Admin.Master.Category.create');
     }
 
-    public function store(CreateCategoryRequest $request)
+    public function store(StoreCategoryRequest $request)
     {
         Category::create($request->all());
 
@@ -52,6 +51,6 @@ class CategoryController extends Controller
 
         return redirect()
             ->route('admin.master.category', status: Response::HTTP_MOVED_PERMANENTLY)
-            ->with('success', 'Successfully deketed category');
+            ->with('success', 'Successfully deleted category');
     }
 }

@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <!-- Breadcrumb -->
         <nav class="flex mb-6" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
@@ -24,7 +23,7 @@
                 </li>
                 <li>
                     <a
-                        href="{{ route('admin.master.category') }}"
+                        href="{{ route('admin.master.role') }}"
                         class="flex items-center"
                     >
                         <svg
@@ -41,7 +40,7 @@
                         <span
                             class="ml-1 text-sm font-medium text-gray-500 hover:text-blue-600 md:ml-2"
                         >
-                            Master Category
+                            Master Role
                         </span>
                     </a>
                 </li>
@@ -61,39 +60,35 @@
                         <span
                             class="ml-1 text-sm font-medium text-gray-500 md:ml-2"
                         >
-                            Create Category
+                            Create Role
                         </span>
                     </div>
                 </li>
             </ol>
         </nav>
 
-        <!-- Header -->
         <div class="mb-6">
-            <h1 class="text-2xl font-bold text-gray-900">Create Category</h1>
-            <p class="text-gray-600 mt-2">Create new category</p>
+            <h1 class="text-2xl font-bold text-gray-900">Create Role</h1>
+            <p class="text-gray-600 mt-2">Create new role</p>
         </div>
 
-        <!-- Form Card -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200">
             <div class="px-6 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-medium text-gray-900">Category</h2>
+                <h2 class="text-lg font-medium text-gray-900">Role</h2>
             </div>
 
             <form
-                action="{{ route('admin.master.category.store') }}"
+                action="{{ route('admin.master.role.store') }}"
                 method="POST"
                 class="p-6"
             >
                 @csrf
-
-                <!-- Category Name -->
                 <div class="mb-6">
                     <label
                         for="name"
                         class="block text-sm font-medium text-gray-700 mb-2"
                     >
-                        Category Name
+                        Role Name
                         <span class="text-red-500">*</span>
                     </label>
                     <input
@@ -122,7 +117,6 @@
                     @enderror
                 </div>
 
-                <!-- Action Buttons -->
                 <div
                     class="flex items-center justify-between pt-6 border-t border-gray-200"
                 >
@@ -149,7 +143,7 @@
 
                     <div class="flex items-center space-x-3">
                         <a
-                            href="{{ route('admin.master.category') }}"
+                            href="{{ route('admin.master.role') }}"
                             class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 bg-white rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
                         >
                             <svg
@@ -185,7 +179,7 @@
                                     d="M5 13l4 4L19 7"
                                 ></path>
                             </svg>
-                            Create New Category
+                            Create New Role
                         </button>
                     </div>
                 </div>
@@ -214,22 +208,4 @@
             </div>
         @endif
     </div>
-
-    <script>
-        setTimeout(function () {
-            const errorMessage = document.getElementById('error-message')
-
-            if (successMessage) {
-                successMessage.style.opacity = '0'
-                successMessage.style.transition = 'opacity 0.5s'
-                setTimeout(() => successMessage.remove(), 500)
-            }
-
-            if (errorMessage) {
-                errorMessage.style.opacity = '0'
-                errorMessage.style.transition = 'opacity 0.5s'
-                setTimeout(() => errorMessage.remove(), 500)
-            }
-        }, 5000)
-    </script>
 @endsection
