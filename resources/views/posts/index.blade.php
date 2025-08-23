@@ -4,49 +4,62 @@
     <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-slate-800">Questions</h1>
-            <button id="openCreateModalBtn"
-                class="bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                        clip-rule="evenodd" />
-                </svg>
-                <span>Create New Post</span>
-            </button>
+            @auth
+                <button id="openCreateModalBtn"
+                    class="bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <span>Create New Post</span>
+                </button>
+            @endauth
+            @guest
+                <a href="{{ route('authentication.login') }}"
+                    class="bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <span>Login to Post</span>
+                </a>
+            @endguest
         </div>
 
         <div class="bg-white p-4 rounded-xl shadow-sm mb-6">
-    <form action="{{ route('posts.index') }}" method="GET">
-        <div class="flex items-center gap-x-4">
+            <form action="{{ route('posts.index') }}" method="GET">
+                <div class="flex items-center gap-x-4">
 
-            <select name="category" onchange="this.form.submit()"
-                class="w-full sm:w-56 px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">All Categories</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->category_id }}"
-                        {{ request('category') == $category->category_id ? 'selected' : '' }}>
-                        {{ $category->name }}
-                    </option>
-                @endforeach
-            </select>
+                    <select name="category" onchange="this.form.submit()"
+                        class="w-full sm:w-56 px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">All Categories</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->category_id }}"
+                                {{ request('category') == $category->category_id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
 
-            <select name="sort" onchange="this.form.submit()"
-                class="w-full sm:w-56 px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="latest" @selected(request('sort', 'latest') == 'latest')>Sort by: Latest</option>
-                <option value="oldest" @selected(request('sort') == 'oldest')>Sort by: Oldest</option>
-                <option value="most_liked" @selected(request('sort') == 'most_liked')>Sort by: Most Liked</option>
-                <option value="most_commented" @selected(request('sort') == 'most_commented')>Sort by: Most Commented
-                </option>
-            </select>
+                    <select name="sort" onchange="this.form.submit()"
+                        class="w-full sm:w-56 px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="latest" @selected(request('sort', 'latest') == 'latest')>Sort by: Latest</option>
+                        <option value="oldest" @selected(request('sort') == 'oldest')>Sort by: Oldest</option>
+                        <option value="most_liked" @selected(request('sort') == 'most_liked')>Sort by: Most Liked</option>
+                        <option value="most_commented" @selected(request('sort') == 'most_commented')>Sort by: Most Commented
+                        </option>
+                    </select>
 
-            <a href="{{ route('posts.index') }}"
-                class="text-slate-600 font-semibold px-4 py-2 rounded-lg hover:bg-slate-100 transition-colors whitespace-nowrap">
-                Reset
-            </a>
+                    <a href="{{ route('posts.index') }}"
+                        class="text-slate-600 font-semibold px-4 py-2 rounded-lg hover:bg-slate-100 transition-colors whitespace-nowrap">
+                        Reset
+                    </a>
 
+                </div>
+            </form>
         </div>
-    </form>
-</div>
 
         @if (session('success'))
             <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md mb-6" role="alert">
