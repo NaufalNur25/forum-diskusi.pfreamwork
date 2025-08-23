@@ -7,7 +7,13 @@
         @vite('resources/css/app.css')
     </head>
     <body class="bg-gray-50 min-h-screen">
-        <x-header />
+        @auth
+            @if (Auth::user()->isAdmin())
+                <x-admin-header />
+            @else
+                <x-header />
+            @endif
+        @endauth
 
         <main>
             @yield('content')
