@@ -19,6 +19,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 
 
@@ -192,5 +193,25 @@ class User extends Authenticatable
 
 
         return $user ?? (bool) $user;
+    }
+
+    public function hasRole($roleName)
+    {
+        return $this->role && Str::lower($this->role->name) === Str::lower($roleName);
+    }
+
+    public function hasRoleId($roleId)
+    {
+        return $this->role_id === $roleId;
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
+
+    public function isUser()
+    {
+        return $this->hasRole('user');
     }
 }
