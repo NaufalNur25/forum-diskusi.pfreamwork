@@ -10,8 +10,13 @@ use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\UserMiddleware;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
+    if (Auth::check() && Auth::user()->isAdmin()) {
+        return redirect()->route('admin.dashboard');
+    }
+
     return redirect()->route('posts.index');
 })->name('home');
 
@@ -41,6 +46,26 @@ Route::middleware('guest')->group(function () {
 
 Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
     Route::get('/dashboard', [AdminService\Dashboard::class, 'index'])->name('admin.dashboard');
+
+    route::prefix('master')->group(function () {
+        route::prefix('category')->group(function () {
+            Route::get('/', [AdminService\Master\CategoryController::class, 'index'])->name('admin.master.category');
+            Route::post('/', [AdminService\Master\CategoryController::class, 'store'])->name('admin.master.category.store');
+            Route::get('/create', [AdminService\Master\CategoryController::class, 'create'])->name('admin.master.category.create');
+            Route::get('/{category}/edit', [AdminService\Master\CategoryController::class, 'edit'])->name('admin.master.category.edit');
+            Route::put('/{category}', [AdminService\Master\CategoryController::class, 'update'])->name('admin.master.category.update');
+            Route::delete('/{category}', [AdminService\Master\CategoryController::class, 'destroy'])->name('admin.master.category.destroy');
+        });
+
+        route::prefix('role')->group(function () {
+            Route::get('/', [AdminService\Master\RoleController::class, 'index'])->name('admin.master.role');
+            Route::post('/', [AdminService\Master\RoleController::class, 'store'])->name('admin.master.role.store');
+            Route::get('/create', [AdminService\Master\RoleController::class, 'create'])->name('admin.master.role.create');
+            Route::get('/{role}/edit', [AdminService\Master\RoleController::class, 'edit'])->name('admin.master.role.edit');
+            Route::put('/{role}', [AdminService\Master\RoleController::class, 'update'])->name('admin.master.role.update');
+            Route::delete('/{role}', [AdminService\Master\RoleController::class, 'destroy'])->name('admin.master.role.destroy');
+        });
+    });
 });
 
 Route::middleware(UserMiddleware::class)->group(function () {

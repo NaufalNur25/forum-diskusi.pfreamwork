@@ -20,7 +20,7 @@ class UserMiddleware
     {
         if (
             Auth::check() &&
-            Auth::user()->role_id == Role::getRoleForUser()
+            Auth::user()->isUser()
         ) {
             return $next($request);
         }
