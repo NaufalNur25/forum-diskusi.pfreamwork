@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Role;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
@@ -20,7 +19,7 @@ class AdminMiddleware
     {
         if (
             Auth::check() &&
-            Auth::user()->role_id == Role::getRoleForAdmin()
+            Auth::user()->isAdmin()
         ) {
             return $next($request);
         }
