@@ -10,41 +10,45 @@ use Illuminate\Support\Facades\Auth;
 class PostController extends Controller
 {
     public function index(Request $request)
-{
-    $categories = Category::all();
-    $query = Post::query();
-
-    if ($request->filled('search')) {
-        $search = $request->search;
-        $query->where('question', 'like', "%{$search}%");
-    }
-
-    if ($request->filled('category')) {
-        $category = $request->category;
-        $query->where('category_id', $category);
-    }
-
-    $posts = $query->with('user', 'category')
-        ->withCount([
-            'comments',
-            'likes',
-            'dislikes',
-            'allReplies'
-        ])
-        ->latest()
-        ->paginate(10);
-
-    return view('posts.index', [
-        'posts' => $posts,
-        'categories' => $categories
-    ]);
-}
-
-    public function create()
     {
         $categories = Category::all();
-        return view('posts.create', ['categories' => $categories]);
+        $query = Post::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('question', 'like', "%{$search}%");
+        }
+
+        if ($request->filled('category')) {
+            $category = $request->category;
+            $query->where('category_id', $category);
+        }
+        $query->withCount(['likes', 'comments']);
+        $sort = $request->input('sort', 'latest');
+
+        switch ($sort) {
+            case 'oldest':
+                $query->oldest();
+                break;
+            case 'most_liked':
+                $query->orderByDesc('likes_count');
+                break;
+            case 'most_commented':
+                $query->orderByDesc('comments_count');
+                break;
+            default:
+                $query->latest();
+                break;
+        }
+
+        $posts = $query->with('user', 'category')->paginate(10);
+
+        return view('posts.index', [
+            'posts' => $posts,
+            'categories' => $categories
+        ]);
     }
+
 
     public function store(Request $request)
     {
@@ -57,13 +61,18 @@ class PostController extends Controller
         $validated['user_id'] = Auth::id();
 
         if ($request->hasFile('content')) {
-
             $path = $request->file('content')->store('posts', 'public');
-
             $validated['content'] = $path;
         }
 
         Post::create($validated);
+
+
+        if ($request->wantsJson()) {
+
+            return response()->json(['message' => 'Pertanyaan berhasil dibuat!'], 201);
+        }
+
 
         return redirect()->route('posts.index')->with('success', 'Post berhasil dibuat!');
     }
