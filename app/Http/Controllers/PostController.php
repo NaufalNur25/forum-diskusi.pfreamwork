@@ -24,15 +24,27 @@ class PostController extends Controller
         $query->where('category_id', $category);
     }
 
-    $posts = $query->with('user', 'category')
-        ->withCount([
-            'comments',
-            'likes',
-            'dislikes',
-            'allReplies'
-        ])
-        ->latest()
-        ->paginate(10);
+    // TAMBAHKAN 'dislikes' DI SINI
+    $query->withCount(['likes', 'comments', 'dislikes']);
+    
+    $sort = $request->input('sort', 'latest');
+
+    switch ($sort) {
+        case 'oldest':
+            $query->oldest();
+            break;
+        case 'most_liked':
+            $query->orderByDesc('likes_count');
+            break;
+        case 'most_commented':
+            $query->orderByDesc('comments_count');
+            break;
+        default:
+            $query->latest();
+            break;
+    }
+
+    $posts = $query->with('user', 'category')->paginate(10);
 
     return view('posts.index', [
         'posts' => $posts,
@@ -40,11 +52,6 @@ class PostController extends Controller
     ]);
 }
 
-    public function create()
-    {
-        $categories = Category::all();
-        return view('posts.create', ['categories' => $categories]);
-    }
 
     public function store(Request $request)
     {
@@ -57,13 +64,18 @@ class PostController extends Controller
         $validated['user_id'] = Auth::id();
 
         if ($request->hasFile('content')) {
-
             $path = $request->file('content')->store('posts', 'public');
-
             $validated['content'] = $path;
         }
 
         Post::create($validated);
+
+
+        if ($request->wantsJson()) {
+
+            return response()->json(['message' => 'Pertanyaan berhasil dibuat!'], 201);
+        }
+
 
         return redirect()->route('posts.index')->with('success', 'Post berhasil dibuat!');
     }

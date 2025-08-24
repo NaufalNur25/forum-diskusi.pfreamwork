@@ -71,8 +71,7 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
 Route::middleware(UserMiddleware::class)->group(function () {
     # PAGE: User
 
-    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+    Route::post('/post', [PostController::class, 'store'])->name('posts.store');
 
 
     Route::get('/post/{post}', [PostController::class, 'show'])->name('posts.show');
@@ -82,5 +81,7 @@ Route::middleware(UserMiddleware::class)->group(function () {
 
     Route::post('/comments/{comment}/answers', [AnswerController::class, 'store'])->name('answers.store');
     Route::get('/profile', [ProfileController::class, 'view'])->name('Profile.view');
+    Route::get('/profile/settings', [ProfileController::class, 'edit'])->name('Profile.edit');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('Profile.update');
 });
 Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');

@@ -14,7 +14,7 @@
                 <div class="mt-2">
                     <a href="{{ asset('storage/' . $comment->content) }}" target="_blank">
                         <img src="{{ asset('storage/' . $comment->content) }}" class="rounded-lg max-w-xs"
-                            alt="Gambar Komentar">
+                            alt="Comment Image">
                     </a>
                 </div>
             @endif
@@ -22,20 +22,20 @@
 
         <div class="mt-1">
             <button type="button" onclick="toggleReplyForm('comment-{{ $comment->comment_id }}')"
-                class="bg-transparent border-none p-0 text-xs text-blue-600 font-semibold hover:underline">Balas</button>
+                class="bg-transparent border-none p-0 text-xs text-blue-600 font-semibold hover:underline">Reply</button>
         </div>
 
         <div class="mt-3 hidden" id="reply-form-comment-{{ $comment->comment_id }}">
             <form action="{{ route('answers.store', $comment) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <textarea class="w-full border-slate-300 rounded-md shadow-sm text-sm" name="answer" rows="2"
-                    placeholder="Tulis balasan..."></textarea>
+                    placeholder="Write a reply..."></textarea>
                 <div class="flex justify-between items-center mt-2">
                     <input type="file" name="content"
                         class="text-sm text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                     <button type="submit"
                         class="bg-blue-600 text-white font-semibold px-3 py-1.5 text-sm rounded-lg shadow-sm hover:bg-blue-700">
-                        Kirim Balasan
+                        Post Reply
                     </button>
                 </div>
             </form>
@@ -50,8 +50,8 @@
                         <div class="bg-slate-50 rounded-lg p-2">
 
                             <div class="text-xs text-slate-500 mb-1">
-                                Membalas kepada <strong class="font-semibold text-slate-600">
-                                    {{-- Jika ada parent answer, tampilkan nama authornya. Jika tidak, tampilkan nama author komentar utama. --}}
+                                Replying to <strong class="font-semibold text-slate-600">
+                                    {{-- If there's a parent answer, display its author's name. Otherwise, display the main comment author's name. --}}
                                     {{ $answer->parent ? $answer->parent->user->name : $comment->user->name }}
                                 </strong>
                             </div>
@@ -67,13 +67,13 @@
                             @if ($answer->content)
                                 <div class="mt-2"><a href="{{ asset('storage/' . $answer->content) }}"
                                         target="_blank"><img src="{{ asset('storage/' . $answer->content) }}"
-                                            class="rounded-lg max-w-xs" alt="Gambar Balasan"></a></div>
+                                            class="rounded-lg max-w-xs" alt="Reply Image"></a></div>
                             @endif
                         </div>
 
                         <div class="mt-1 text-xs">
                             <button type="button" onclick="toggleReplyForm('answer-{{ $answer->answer_id }}')"
-                                class="bg-transparent border-none p-0 text-blue-600 font-semibold hover:underline">Balas</button>
+                                class="bg-transparent border-none p-0 text-blue-600 font-semibold hover:underline">Reply</button>
                         </div>
                         <div class="mt-2 hidden" id="reply-form-answer-{{ $answer->answer_id }}">
                             <form action="{{ route('answers.store', $comment) }}" method="POST"
@@ -81,12 +81,12 @@
                                 @csrf
                                 <input type="hidden" name="parent_id" value="{{ $answer->answer_id }}">
                                 <textarea class="w-full border-slate-300 rounded-md shadow-sm text-sm" name="answer" rows="2"
-                                    placeholder="Balas {{ $answer->user->name }}..."></textarea>
+                                    placeholder="Reply to {{ $answer->user->name }}..."></textarea>
                                 <div class="flex justify-between items-center mt-2">
                                     <input type="file" name="content"
                                         class="text-sm text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                                     <button type="submit"
-                                        class="bg-blue-600 text-white font-semibold px-3 py-1.5 text-xs rounded-lg shadow-sm hover:bg-blue-700">Kirim</button>
+                                        class="bg-blue-600 text-white font-semibold px-3 py-1.5 text-xs rounded-lg shadow-sm hover:bg-blue-700">Send</button>
                                 </div>
                             </form>
                         </div>
