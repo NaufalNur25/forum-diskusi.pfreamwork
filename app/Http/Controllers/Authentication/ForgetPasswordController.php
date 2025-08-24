@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Authentication\SendingEmailRequest;
 use App\Jobs\SendPasswordResetEmail;
 use App\Models\User;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -38,7 +37,7 @@ class ForgetPasswordController extends Controller
         }
 
         return redirect()
-            ->route('home', status: Response::HTTP_MOVED_PERMANENTLY)
+            ->route('home')
             ->with('info', 'A link will be sent to your email account if it is linked to us.');
     }
 }

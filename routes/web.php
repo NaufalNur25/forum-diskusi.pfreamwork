@@ -20,13 +20,19 @@ Route::get('/', function () {
     return redirect()->route('posts.index');
 })->name('home');
 
-Route::get('/api/csrf', function (\Illuminate\Http\Request $request) {
-    return response()->json([
-        'csrf_token' => $request->session()->token()
-    ]);
-});
-
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+Route::middleware(UserMiddleware::class)->group(function () {
+    # PAGE: User
+    Route::post('/post', [PostController::class, 'store'])->name('posts.store');
+    Route::get('/post/{post}', [PostController::class, 'show'])->name('posts.show');
+    Route::post('/post/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/post/{post}/interact', [InteractionController::class, 'store'])->name('posts.interact');
+    Route::post('/comments/{comment}/answers', [AnswerController::class, 'store'])->name('answers.store');
+
+    Route::get('/profile', [ProfileController::class, 'view'])->name('Profile.view');
+    Route::get('/profile/settings', [ProfileController::class, 'edit'])->name('Profile.edit');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('Profile.update');
+});
 
 Route::middleware('guest')->group(function () {
     # ROLE: User
@@ -43,6 +49,8 @@ Route::middleware('guest')->group(function () {
     Route::get('/login/privilege/{role}', [AdminService\Authentication\LoginController::class, 'view'])->name('admin.authentication.login');
     Route::post('/login/privilege', [AdminService\Authentication\LoginController::class, 'login'])->name('admin.authentication.login.action');
 });
+
+Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');
 
 Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
     Route::get('/dashboard', [AdminService\Dashboard::class, 'index'])->name('admin.dashboard');
@@ -67,21 +75,3 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
         });
     });
 });
-
-Route::middleware(UserMiddleware::class)->group(function () {
-    # PAGE: User
-
-    Route::post('/post', [PostController::class, 'store'])->name('posts.store');
-
-
-    Route::get('/post/{post}', [PostController::class, 'show'])->name('posts.show');
-    Route::post('/post/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
-
-    Route::post('/post/{post}/interact', [InteractionController::class, 'store'])->name('posts.interact');
-
-    Route::post('/comments/{comment}/answers', [AnswerController::class, 'store'])->name('answers.store');
-    Route::get('/profile', [ProfileController::class, 'view'])->name('Profile.view');
-    Route::get('/profile/settings', [ProfileController::class, 'edit'])->name('Profile.edit');
-    Route::put('/profile/update', [ProfileController::class, 'update'])->name('Profile.update');
-});
-Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');

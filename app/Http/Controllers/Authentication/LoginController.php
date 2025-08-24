@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Authentication;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Authentication\LoginRequest;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -28,7 +27,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             return redirect()
-                ->route('posts.index', status: Response::HTTP_MOVED_PERMANENTLY);
+                ->route('home');
         }
 
         throw ValidationException::withMessages([
