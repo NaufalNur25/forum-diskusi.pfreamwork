@@ -5,13 +5,24 @@ namespace App\Http\Controllers\Admin\Master;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Master\Category\StoreCategoryRequest;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::withCount('posts')->paginate(5);
+        $query = Category::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereRaw('LOWER(name) LIKE ?', ["%".strtolower($search)."%"]);
+        }
+
+        $categories = $query->with('posts')
+            ->withCount('posts')
+            ->latest('updated_at')
+            ->paginate(5);
 
         return view('Admin.Master.Category.index', compact('categories'));
     }

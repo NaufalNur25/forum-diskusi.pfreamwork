@@ -70,16 +70,15 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
 
 Route::middleware(UserMiddleware::class)->group(function () {
     # PAGE: User
-    Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');
 
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 
 
-    Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
-    Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('/post/{post}', [PostController::class, 'show'])->name('posts.show');
+    Route::post('/post/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
 
-    Route::post('/posts/{post}/interact', [InteractionController::class, 'store'])->name('posts.interact');
+    Route::post('/post/{post}/interact', [InteractionController::class, 'store'])->name('posts.interact');
 
     Route::post('/comments/{comment}/answers', [AnswerController::class, 'store'])->name('answers.store');
     Route::get('/profile', [ProfileController::class, 'view'])->name('Profile.view');

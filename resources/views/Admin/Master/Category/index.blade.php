@@ -72,6 +72,62 @@
             </a>
         </div>
 
+        <div class="mb-6">
+            <form method="GET" action="{{ route('admin.master.category') }}" class="flex flex-col sm:flex-row gap-4">
+                <div class="flex-1">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <input
+                            type="text"
+                            name="search"
+                            value="{{ request('search') }}"
+                            placeholder="Search categories by name..."
+                            class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                        >
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button
+                        type="submit"
+                        class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    >
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        Search
+                    </button>
+                    @if(request('search'))
+                        <a
+                            href="{{ route('admin.master.category') }}"
+                            class="inline-flex items-center px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                        >
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Clear
+                        </a>
+                    @endif
+                </div>
+            </form>
+
+            @if(request('search'))
+                <div class="mt-3">
+                    <p class="text-sm text-gray-600">
+                        Search results for: <span class="font-semibold text-gray-900">"{{ request('search') }}"</span>
+                        @if($categories->total() > 0)
+                            - {{ $categories->total() }} {{ Str::plural('result', $categories->total()) }} found
+                        @else
+                            - No results found
+                        @endif
+                    </p>
+                </div>
+            @endif
+        </div>
+
         <div
             class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
         >
@@ -109,12 +165,16 @@
                             <td
                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
                             >
-                                {{ $index + 1 }}
+                                {{ $categories->firstItem() + $index }}
                             </td>
                             <td
                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
                             >
-                                {{ $category->name }}
+                                @if(request('search'))
+                                    {!! str_ireplace(request('search'), '<mark class="bg-yellow-200 px-1 rounded">' . request('search') . '</mark>', e($category->name)) !!}
+                                @else
+                                    {{ $category->name }}
+                                @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-center">
                                 <span
@@ -183,34 +243,9 @@
                                 <div
                                     class="flex flex-col items-center justify-center"
                                 >
-                                    <svg
-                                        class="w-16 h-16 text-gray-400 mb-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                                        ></path>
-                                    </svg>
-                                    <h3
-                                        class="text-lg font-medium text-gray-900 mb-2"
-                                    >
-                                        No Record Found
-                                    </h3>
-                                    <p class="text-gray-500 text-sm mb-4">
-                                        There are no categories available yet.
-                                        Start by adding a new category.
-                                    </p>
-                                    <a
-                                        href="{{ route('admin.master.category.create') }}"
-                                        class="inline-flex items-center px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-md transition-colors duration-200"
-                                    >
+                                    @if(request('search'))
                                         <svg
-                                            class="w-4 h-4 mr-2"
+                                            class="w-16 h-16 text-gray-400 mb-4"
                                             fill="none"
                                             stroke="currentColor"
                                             viewBox="0 0 24 24"
@@ -219,11 +254,88 @@
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
                                                 stroke-width="2"
-                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                                             ></path>
                                         </svg>
-                                        Add new category
-                                    </a>
+                                        <h3
+                                            class="text-lg font-medium text-gray-900 mb-2"
+                                        >
+                                            No Search Results
+                                        </h3>
+                                        <p class="text-gray-500 text-sm mb-4">
+                                            No categories found matching "<strong>{{ request('search') }}</strong>".
+                                            Try searching with different keywords.
+                                        </p>
+                                        <div class="flex gap-2">
+                                            <a
+                                                href="{{ route('admin.master.category') }}"
+                                                class="inline-flex items-center px-3 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium rounded-md transition-colors duration-200"
+                                            >
+                                                Clear Search
+                                            </a>
+                                            <a
+                                                href="{{ route('admin.master.category.create') }}"
+                                                class="inline-flex items-center px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-md transition-colors duration-200"
+                                            >
+                                                <svg
+                                                    class="w-4 h-4 mr-2"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                                    ></path>
+                                                </svg>
+                                                Add new category
+                                            </a>
+                                        </div>
+                                    @else
+                                        <svg
+                                            class="w-16 h-16 text-gray-400 mb-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                                            ></path>
+                                        </svg>
+                                        <h3
+                                            class="text-lg font-medium text-gray-900 mb-2"
+                                        >
+                                            No Record Found
+                                        </h3>
+                                        <p class="text-gray-500 text-sm mb-4">
+                                            There are no categories available yet.
+                                            Start by adding a new category.
+                                        </p>
+                                        <a
+                                            href="{{ route('admin.master.category.create') }}"
+                                            class="inline-flex items-center px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-md transition-colors duration-200"
+                                        >
+                                            <svg
+                                                class="w-4 h-4 mr-2"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                                ></path>
+                                            </svg>
+                                            Add new category
+                                        </a>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -238,12 +350,19 @@
                     Showing {{ $categories->firstItem() }} -
                     {{ $categories->lastItem() }} from
                     {{ $categories->total() }} categories
+                    @if(request('search'))
+                        (filtered from total categories)
+                    @endif
                 @else
+                    @if(request('search'))
+                        No categories found for "{{ request('search') }}"
+                    @else
                         No category data
+                    @endif
                 @endif
             </div>
             <div>
-                {{ $categories->links('templates.custom-pagination') }}
+                {{ $categories->appends(request()->query())->links('templates.custom-pagination') }}
             </div>
         </div>
     </div>
