@@ -9,31 +9,15 @@
                         href="{{ route('admin.dashboard') }}"
                         class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600"
                     >
-                        <svg
-                            class="w-4 h-4 mr-2"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                        >
-                            <path
-                                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
-                            ></path>
-                        </svg>
+                        <x-gmdi-home class="w-4 h-4 mr-1" />
                         Dashboard
                     </a>
                 </li>
                 <li>
                     <div class="flex items-center cursor-default">
-                        <svg
-                            class="w-6 h-6 text-gray-400"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                clip-rule="evenodd"
-                            ></path>
-                        </svg>
+                        <x-gmdi-arrow-forward-ios-r
+                            class="w-4 h-4 text-gray-400"
+                        />
                         <span
                             class="ml-1 text-sm font-medium text-gray-500 md:ml-2"
                         >
@@ -55,31 +39,23 @@
                 href="{{ route('admin.master.category.create') }}"
                 class="inline-flex h-fit mt-auto items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
-                <svg
-                    class="w-4 h-4 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    ></path>
-                </svg>
+                <x-gmdi-add class="w-5 h-5 mr-2" />
                 Add new Category
             </a>
         </div>
 
         <div class="mb-6">
-            <form method="GET" action="{{ route('admin.master.category') }}" class="flex flex-col sm:flex-row gap-4">
+            <form
+                method="GET"
+                action="{{ route('admin.master.category') }}"
+                class="flex flex-col sm:flex-row gap-4"
+            >
                 <div class="flex-1">
                     <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
+                        <div
+                            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                        >
+                            <x-gmdi-search class="h-5 w-5 text-gray-400" />
                         </div>
                         <input
                             type="text"
@@ -87,7 +63,7 @@
                             value="{{ request('search') }}"
                             placeholder="Search categories by name..."
                             class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                        >
+                        />
                     </div>
                 </div>
                 <div class="flex gap-2">
@@ -95,33 +71,35 @@
                         type="submit"
                         class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
+                        <x-gmdi-search class="w-4 h-4 mr-2" />
                         Search
                     </button>
-                    @if(request('search'))
+                    @if (request('search'))
                         <a
                             href="{{ route('admin.master.category') }}"
                             class="inline-flex items-center px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                         >
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
+                            <x-gmdi-clear class="w-4 h-4 mr-2" />
                             Clear
                         </a>
                     @endif
                 </div>
             </form>
 
-            @if(request('search'))
+            @if (request('search'))
                 <div class="mt-3">
                     <p class="text-sm text-gray-600">
-                        Search results for: <span class="font-semibold text-gray-900">"{{ request('search') }}"</span>
-                        @if($categories->total() > 0)
-                            - {{ $categories->total() }} {{ Str::plural('result', $categories->total()) }} found
+                        Search results for:
+                        <span class="font-semibold text-gray-900">
+                            "{{ request('search') }}"
+                        </span>
+
+                        @if ($categories->total() > 0)
+                            - {{ $categories->total() }}
+                            {{ Str::plural('result', $categories->total()) }}
+                            found
                         @else
-                            - No results found
+                                - No results found
                         @endif
                     </p>
                 </div>
@@ -170,7 +148,7 @@
                             <td
                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
                             >
-                                @if(request('search'))
+                                @if (request('search'))
                                     {!! str_ireplace(request('search'), '<mark class="bg-yellow-200 px-1 rounded">' . request('search') . '</mark>', e($category->name)) !!}
                                 @else
                                     {{ $category->name }}
@@ -192,19 +170,7 @@
                                         class="inline-flex items-center justify-center w-8 h-8 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
                                         title="Edit Category"
                                     >
-                                        <svg
-                                            class="w-4 h-4"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                            ></path>
-                                        </svg>
+                                        <x-gmdi-edit-note-o class="w-6 h-6" />
                                     </a>
 
                                     <form
@@ -219,19 +185,7 @@
                                             class="inline-flex items-center justify-center w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                                             title="Delete Category"
                                         >
-                                            <svg
-                                                class="w-4 h-4"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                                ></path>
-                                            </svg>
+                                            <x-gmdi-delete-o class="w-5 h-5" />
                                         </button>
                                     </form>
                                 </div>
@@ -243,28 +197,22 @@
                                 <div
                                     class="flex flex-col items-center justify-center"
                                 >
-                                    @if(request('search'))
-                                        <svg
+                                    @if (request('search'))
+                                        <x-gmdi-search
                                             class="w-16 h-16 text-gray-400 mb-4"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                            ></path>
-                                        </svg>
+                                        />
                                         <h3
                                             class="text-lg font-medium text-gray-900 mb-2"
                                         >
                                             No Search Results
                                         </h3>
                                         <p class="text-gray-500 text-sm mb-4">
-                                            No categories found matching "<strong>{{ request('search') }}</strong>".
-                                            Try searching with different keywords.
+                                            No categories found matching "
+                                            <strong>
+                                                {{ request('search') }}
+                                            </strong>
+                                            ". Try searching with different
+                                            keywords.
                                         </p>
                                         <div class="flex gap-2">
                                             <a
@@ -277,62 +225,30 @@
                                                 href="{{ route('admin.master.category.create') }}"
                                                 class="inline-flex items-center px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-md transition-colors duration-200"
                                             >
-                                                <svg
-                                                    class="w-4 h-4 mr-2"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                                    ></path>
-                                                </svg>
+                                                <x-gmdi-add
+                                                    class="w-5 h-5 mr-2"
+                                                />
                                                 Add new category
                                             </a>
                                         </div>
                                     @else
-                                        <svg
+                                        <x-gmdi-search
                                             class="w-16 h-16 text-gray-400 mb-4"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                                            ></path>
-                                        </svg>
+                                        />
                                         <h3
                                             class="text-lg font-medium text-gray-900 mb-2"
                                         >
                                             No Record Found
                                         </h3>
                                         <p class="text-gray-500 text-sm mb-4">
-                                            There are no categories available yet.
-                                            Start by adding a new category.
+                                            There are no categories available
+                                            yet. Start by adding a new category.
                                         </p>
                                         <a
                                             href="{{ route('admin.master.category.create') }}"
                                             class="inline-flex items-center px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-md transition-colors duration-200"
                                         >
-                                            <svg
-                                                class="w-4 h-4 mr-2"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                                ></path>
-                                            </svg>
+                                            <x-gmdi-add class="w-5 h-5 mr-2" />
                                             Add new category
                                         </a>
                                     @endif
@@ -350,14 +266,14 @@
                     Showing {{ $categories->firstItem() }} -
                     {{ $categories->lastItem() }} from
                     {{ $categories->total() }} categories
-                    @if(request('search'))
+                    @if (request('search'))
                         (filtered from total categories)
                     @endif
                 @else
-                    @if(request('search'))
+                    @if (request('search'))
                         No categories found for "{{ request('search') }}"
                     @else
-                        No category data
+                            No category data
                     @endif
                 @endif
             </div>
