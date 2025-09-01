@@ -8,9 +8,26 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    private const DEFAULT_ROLE_FILTER = 'user';
+
+    public function index(Request $request)
     {
-        $query = User::query();
+        $query = User::query()->whereHas('role', function ($q) {
+            $q->whereRaw('LOWER(name) LIKE ?', ["%" . self::DEFAULT_ROLE_FILTER . "%"]);
+        });
+
+        if ($request->filled('status')) {
+            $status = $request->status === 'safe' ? 0 : 1;
+            $query->where('is_blocked', $status);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(name) LIKE ?', ["%" . strtolower($search) . "%"])
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
 
         $users = $query->latest()->paginate(10);
 

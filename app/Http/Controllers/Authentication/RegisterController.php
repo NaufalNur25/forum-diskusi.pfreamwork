@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Authentication\CreateAccountRequest;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\VerifiedEmailService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -27,6 +28,15 @@ class RegisterController extends Controller
 
         try {
             $user = User::create($inputRequest);
+
+            $verifiedService = app(VerifiedEmailService::class);
+            $verified = $verifiedService->send($user);
+
+            if (!$verified) {
+                return redirect()
+                    ->route('admin.user.show', $user)
+                    ->with('error', "Sorry this email was verified!");
+            }
 
             Auth::login($user, remember: false);
 

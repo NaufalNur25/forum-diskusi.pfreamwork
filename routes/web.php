@@ -50,6 +50,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/login/privilege', [AdminService\Authentication\LoginController::class, 'login'])->name('admin.authentication.login.action');
 });
 
+Route::get('/verified', [AuthService\VerifiedEmailController::class, 'verifiedEmail'])->name('authentication.verified.action');
 Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');
 
 Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
@@ -84,5 +85,11 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
         Route::get('/{user}/edit', [AdminService\User\UserController::class, 'edit'])->name('admin.user.edit');
         Route::put('/{user}', [AdminService\User\UserController::class, 'update'])->name('admin.user.update');
         Route::delete('/{user}', [AdminService\User\UserController::class, 'destroy'])->name('admin.user.destroy');
+
+        Route::post('/impersonate/{user}', [AdminService\Authentication\ImpersonateController::class, 'action'])->name('admin.user.impersonate');
+        Route::post('/forget-password/{user}', [AdminService\Authentication\ForgetPasswordController::class, 'sendLinkToMail'])->name('admin.user.forget-password');
+        Route::post('/verified-email/{user}', [AdminService\Authentication\VerifiedEmailController::class, 'sendLinkToMail'])->name('admin.user.verified-email');
+        Route::patch('/changed-email/{user}', [AdminService\Authentication\ChangedEmailController::class, 'action'])->name('admin.user.change-email');
+        Route::patch('/banned/{user}', [AdminService\Authentication\BannedController::class, 'action'])->name('admin.user.banned');
     });
 });

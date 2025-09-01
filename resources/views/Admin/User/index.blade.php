@@ -65,46 +65,28 @@
                             type="text"
                             name="search"
                             value="{{ request('search') }}"
-                            placeholder="Search users by name, email, or role..."
+                            placeholder="Search users by name or email..."
                             class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
                         />
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-2">
                     <select
-                        name="role"
-                        class="px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                    >
-                        <option value="">All Roles</option>
-                        <option
-                            value="admin"
-                            {{ request('role') === 'admin' ? 'selected' : '' }}
-                        >
-                            Admin
-                        </option>
-                        <option
-                            value="user"
-                            {{ request('role') === 'user' ? 'selected' : '' }}
-                        >
-                            User
-                        </option>
-                    </select>
-                    <select
                         name="status"
                         class="px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                     >
                         <option value="">All Status</option>
                         <option
-                            value="active"
-                            {{ request('status') === 'active' ? 'selected' : '' }}
+                            value="safe"
+                            {{ request('status') === 'safe' ? 'selected' : '' }}
                         >
-                            Active
+                            Safe
                         </option>
                         <option
-                            value="inactive"
-                            {{ request('status') === 'inactive' ? 'selected' : '' }}
+                            value="banned"
+                            {{ request('status') === 'banned' ? 'selected' : '' }}
                         >
-                            Inactive
+                            Banned
                         </option>
                     </select>
                     <button
@@ -202,7 +184,7 @@
             >
                 @foreach ($users as $user)
                     <div
-                        class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200 hover:-translate-y-1"
+                        class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200 hover:-translate-y-1 flex flex-col"
                     >
                         <div class="relative p-6 pb-0">
                             <div class="w-20 h-20 mx-auto mb-4 relative">
@@ -246,7 +228,9 @@
                             </div>
                         </div>
 
-                        <div class="p-6 pt-2 text-center">
+                        <div
+                            class="p-6 pt-2 text-center flex-grow flex flex-col"
+                        >
                             <h3
                                 class="text-lg font-semibold text-gray-900 mb-1 truncate"
                             >
@@ -272,51 +256,52 @@
                                 </span>
                             </div>
 
-                            @if (strtolower($user->role->name) === 'user')
-                                <div
-                                    class="grid grid-cols-2 gap-4 mb-4 text-center"
-                                >
-                                    <div>
-                                        <div
-                                            class="text-lg font-bold text-gray-900"
-                                        >
-                                            {{ $user->posts_count ?? 0 }}
-                                        </div>
-                                        <div class="text-xs text-gray-500">
-                                            Posts
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div
-                                            class="text-lg font-bold text-gray-900"
-                                        >
-                                            {{ $user->created_at ? $user->created_at->diffForHumans() : 'N/A' }}
-                                        </div>
-                                        <div class="text-xs text-gray-500">
-                                            Days ago
-                                        </div>
-                                    </div>
-                                </div>
-                            @else
-                                <div
-                                    class="grid mb-4 text-center"
-                                >
-                                    <div>
-                                        <div
-                                            class="text-lg font-bold text-gray-900"
-                                        >
-                                            {{ $user->created_at ? $user->created_at->diffForHumans() : 'N/A' }}
-                                        </div>
-                                        <div class="text-xs text-gray-500">
-                                            Days ago
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-
-                            <!-- Actions -->
+                            <!-- Stats section with fixed height -->
                             <div
-                                class="flex items-center justify-center space-x-2"
+                                class="mb-4 h-16 flex items-center justify-center"
+                            >
+                                @if (strtolower($user->role->name) === 'user')
+                                    <div
+                                        class="grid grid-cols-2 gap-4 text-center w-full"
+                                    >
+                                        <div>
+                                            <div
+                                                class="text-lg font-bold text-gray-900"
+                                            >
+                                                {{ $user->posts_count ?? 0 }}
+                                            </div>
+                                            <div class="text-xs text-gray-500">
+                                                Posts
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-lg font-bold text-gray-900"
+                                            >
+                                                {{ $user->created_at ? $user->created_at->diffForHumans() : 'N/A' }}
+                                            </div>
+                                            <div class="text-xs text-gray-500">
+                                                Days ago
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="text-center w-full">
+                                        <div
+                                            class="text-lg font-bold text-gray-900"
+                                        >
+                                            {{ $user->created_at ? $user->created_at->diffForHumans() : 'N/A' }}
+                                        </div>
+                                        <div class="text-xs text-gray-500">
+                                            Days ago
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- Actions - pushed to bottom with mt-auto -->
+                            <div
+                                class="flex items-center justify-center space-x-2 mt-auto"
                             >
                                 <a
                                     href="{{ route('admin.user.show', $user) }}"
@@ -355,7 +340,7 @@
 
                         <!-- Footer Info -->
                         <div
-                            class="px-6 py-3 bg-gray-50 border-t border-gray-100"
+                            class="px-6 py-3 bg-gray-50 border-t border-gray-100 mt-auto"
                         >
                             <div
                                 class="flex items-center justify-between text-xs text-gray-500"

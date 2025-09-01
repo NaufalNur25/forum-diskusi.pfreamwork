@@ -75,13 +75,19 @@
                             <h1 class="text-3xl font-bold text-gray-900">
                                 {{ $user->name }}
                             </h1>
-                            <!-- Status Badge -->
-                            @if ($user->status)
+                            @if ($user->status == App\Models\User::$statusTexts['safe'])
                                 <span
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"
                                 >
                                     <x-gmdi-check-circle class="w-3 h-3 mr-1" />
                                     Safe
+                                </span>
+                            @elseif ($user->status == App\Models\User::$statusTexts['unverified'])
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
+                                >
+                                    <x-gmdi-warning class="w-3 h-3 mr-1" />
+                                    Unverified
                                 </span>
                             @else
                                 <span
@@ -300,11 +306,252 @@
                             <x-gmdi-manage-accounts-r
                                 class="w-5 h-5 mr-2 text-blue-500"
                             />
-                            Tools
+                            Admin Tools
                         </h2>
                     </div>
                     <div class="p-6">
-                        <div class="space-y-4"></div>
+                        <div class="space-y-4">
+                            <div
+                                class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                            >
+                                <div class="flex items-center space-x-3">
+                                    @if (! $user->is_blocked)
+                                        <div
+                                            class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center"
+                                        >
+                                            <x-gmdi-block
+                                                class="w-5 h-5 text-red-600"
+                                            />
+                                        </div>
+                                        <div>
+                                            <h3
+                                                class="text-sm font-medium text-gray-900"
+                                            >
+                                                Ban User
+                                            </h3>
+                                            <p class="text-xs text-gray-500">
+                                                Restrict user access
+                                            </p>
+                                        </div>
+                                    @else
+                                        <div
+                                            class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center"
+                                        >
+                                            <x-gmdi-check-circle
+                                                class="w-5 h-5 text-green-600"
+                                            />
+                                        </div>
+                                        <div>
+                                            <h3
+                                                class="text-sm font-medium text-gray-900"
+                                            >
+                                                Unban User
+                                            </h3>
+                                            <p class="text-xs text-gray-500">
+                                                Restore user access
+                                            </p>
+                                        </div>
+                                    @endif
+                                </div>
+                                @if ($user->id !== auth()->id())
+                                    <form
+                                        action="{{ route('admin.user.banned', $user) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Are you sure you want to {{ ! $user->is_blocked ? 'ban' : 'unban' }} this user?')"
+                                        class="inline"
+                                    >
+                                        @csrf
+                                        @method('PATCH')
+                                        @if (! $user->is_blocked)
+                                            <button
+                                                type="submit"
+                                                class="inline-flex items-center justify-center min-w-[100px] px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-xs font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                                            >
+                                                <x-gmdi-block
+                                                    class="w-4 h-4 mr-1"
+                                                />
+                                                Ban
+                                            </button>
+                                        @else
+                                            <button
+                                                type="submit"
+                                                class="inline-flex items-center justify-center min-w-[100px] px-3 py-2 bg-green-500 hover:bg-green-600 text-white text-xs font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                                            >
+                                                <x-gmdi-check-circle
+                                                    class="w-4 h-4 mr-1"
+                                                />
+                                                Unban
+                                            </button>
+                                        @endif
+                                    </form>
+                                @else
+                                    <span class="text-xs text-gray-400 italic">
+                                        Cannot modify own account
+                                    </span>
+                                @endif
+                            </div>
+
+                            <!-- Send Password Reset Email -->
+                            <div
+                                class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                            >
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"
+                                    >
+                                        <x-gmdi-mail
+                                            class="w-5 h-5 text-blue-600"
+                                        />
+                                    </div>
+                                    <div>
+                                        <h3
+                                            class="text-sm font-medium text-gray-900"
+                                        >
+                                            Reset Password
+                                        </h3>
+                                        <p class="text-xs text-gray-500">
+                                            Send password reset email
+                                        </p>
+                                    </div>
+                                </div>
+                                <form
+                                    action="{{ route('admin.user.forget-password', $user) }}"
+                                    method="POST"
+                                    onsubmit="return confirm('Send password reset email to {{ $user->email }}?')"
+                                    class="inline"
+                                >
+                                    @csrf
+                                    <button
+                                        type="submit"
+                                        class="inline-flex items-center justify-center min-w-[100px] px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                    >
+                                        <x-gmdi-send class="w-4 h-4 mr-1" />
+                                        Send
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- Change Email -->
+                            <div
+                                class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                            >
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center"
+                                    >
+                                        <x-gmdi-alternate-email
+                                            class="w-5 h-5 text-yellow-600"
+                                        />
+                                    </div>
+                                    <div>
+                                        <h3
+                                            class="text-sm font-medium text-gray-900"
+                                        >
+                                            Change Email
+                                        </h3>
+                                        <p class="text-xs text-gray-500">
+                                            Update user email address
+                                        </p>
+                                    </div>
+                                </div>
+                                <button
+                                    type="button"
+                                    onclick="openChangeEmailModal()"
+                                    class="inline-flex items-center justify-center min-w-[100px] px-3 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
+                                >
+                                    <x-gmdi-edit class="w-4 h-4 mr-1" />
+                                    Change
+                                </button>
+                            </div>
+
+                            <!-- Email Verification -->
+                            @if (! $user->email_verified_at)
+                                <div
+                                    class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                                >
+                                    <div class="flex items-center space-x-3">
+                                        <div
+                                            class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center"
+                                        >
+                                            <x-gmdi-mark-email-read
+                                                class="w-5 h-5 text-purple-600"
+                                            />
+                                        </div>
+                                        <div>
+                                            <h3
+                                                class="text-sm font-medium text-gray-900"
+                                            >
+                                                Verify Email
+                                            </h3>
+                                            <p class="text-xs text-gray-500">
+                                                Send verification email
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <form
+                                        action="{{ route('admin.user.verified-email', $user) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Send email verification to {{ $user->email }}?')"
+                                        class="inline"
+                                    >
+                                        @csrf
+                                        <button
+                                            type="submit"
+                                            class="inline-flex items-center justify-center min-w-[100px] px-3 py-2 bg-purple-500 hover:bg-purple-600 text-white text-xs font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+                                        >
+                                            <x-gmdi-verified
+                                                class="w-4 h-4 mr-1"
+                                            />
+                                            Verify
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
+
+                            <!-- Login as User (Super Admin only) -->
+                            @if (auth()->user()->isAdmin() && $user->id !== auth()->id())
+                                <div
+                                    class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                                >
+                                    <div class="flex items-center space-x-3">
+                                        <div
+                                            class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center"
+                                        >
+                                            <x-gmdi-login
+                                                class="w-5 h-5 text-indigo-600"
+                                            />
+                                        </div>
+                                        <div>
+                                            <h3
+                                                class="text-sm font-medium text-gray-900"
+                                            >
+                                                Login as User
+                                            </h3>
+                                            <p class="text-xs text-gray-500">
+                                                Impersonate this user
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <form
+                                        action="{{ route('admin.user.impersonate', $user) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Login as {{ $user->name }}? You can return to your account later.')"
+                                        class="inline"
+                                    >
+                                        @csrf
+                                        <button
+                                            type="submit"
+                                            class="inline-flex items-center justify-center min-w-[100px] px-3 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                        >
+                                            <x-gmdi-person
+                                                class="w-4 h-4 mr-1"
+                                            />
+                                            Login
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -424,7 +671,7 @@
                                     Status
                                 </dt>
                                 <dd class="mt-1">
-                                    @if ($user->status)
+                                    @if (! $user->is_blocked)
                                         <span
                                             class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
                                         >
@@ -472,6 +719,89 @@
         </div>
     </div>
 
+    <div
+        id="changeEmailModal"
+        data-state="closed"
+        class="fixed inset-0 bg-black/70 items-center justify-center z-50 data-[state=open]:flex data-[state=closed]:hidden"
+    >
+        <div
+            class="bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-lg mx-4"
+        >
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">
+                    Change Email Address
+                </h2>
+                <button
+                    id="closeModalBtn"
+                    class="text-slate-500 hover:text-slate-800"
+                    onclick="closeModal()"
+                >
+                    &times;
+                </button>
+            </div>
+            <form
+                id="createPostForm"
+                action="{{ route('admin.user.change-email', $user) }}"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+                @csrf
+                @method('PATCH')
+                <div class="space-y-4">
+                    <div>
+                        <label
+                            for="current_email"
+                            class="block text-sm font-medium text-gray-700"
+                        >
+                            Current Email
+                        </label>
+                        <input
+                            type="email"
+                            id="current_email"
+                            value="{{ $user->email }}"
+                            disabled
+                            class="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-sm"
+                        />
+                    </div>
+
+                    <div>
+                        <label
+                            for="new_email"
+                            class="block text-sm font-medium text-gray-700"
+                        >
+                            New Email
+                        </label>
+                        <input
+                            type="email"
+                            id="new_email"
+                            name="email"
+                            required
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                            placeholder="Enter new email address"
+                        />
+                    </div>
+
+                    <div class="flex items-center space-x-3 pt-4">
+                        <button
+                            type="submit"
+                            class="flex-1 inline-flex justify-center items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        >
+                            <x-gmdi-save class="w-4 h-4 mr-2" />
+                            Update Email
+                        </button>
+                        <button
+                            type="button"
+                            onclick="closeModal()"
+                            class="flex-1 inline-flex justify-center items-center px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     @if (session('success'))
         <div
             id="success-message"
@@ -497,6 +827,26 @@
     @endif
 
     <script>
+        const changeEmailModal = document.getElementById('changeEmailModal')
+        const closeModalBtn = document.getElementById('closeModalBtn')
+        const cancelBtn = document.getElementById('cancelBtn')
+
+        function openChangeEmailModal() {
+            changeEmailModal.dataset.state = 'open'
+        }
+
+        function closeModal() {
+            changeEmailModal.dataset.state = 'closed'
+        }
+
+        document
+            .getElementById('changeEmailModal')
+            .addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeChangeEmailModal()
+                }
+            })
+
         setTimeout(function () {
             const successMessage = document.getElementById('success-message')
             const errorMessage = document.getElementById('error-message')

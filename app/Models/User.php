@@ -56,11 +56,27 @@ class User extends Authenticatable
         ];
     }
 
+    public static array $statusTexts = [
+        'banned' => 'Banned',
+        'unverified' => 'Unverified',
+        'safe' => 'Safe'
+    ];
+
     protected function status(): Attribute
     {
+        $status = self::$statusTexts['safe'];
+
+        if (! $this->email_verified_at) {
+            $status = self::$statusTexts['unverified'];
+        }
+
+        if ($this->is_blocked) {
+            $status = self::$statusTexts['banned'];
+        }
+
         return Attribute::make(
             get: fn($value, $attributes) =>
-            $attributes['status'] ?? $this->hasVerifiedEmail() && !$this->is_blocked
+            $attributes['status'] ?? $status
         );
     }
 
