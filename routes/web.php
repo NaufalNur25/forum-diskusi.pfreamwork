@@ -20,13 +20,19 @@ Route::get('/', function () {
     return redirect()->route('posts.index');
 })->name('home');
 
-Route::get('/api/csrf', function (\Illuminate\Http\Request $request) {
-    return response()->json([
-        'csrf_token' => $request->session()->token()
-    ]);
-});
-
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+Route::middleware(UserMiddleware::class)->group(function () {
+    # PAGE: User
+    Route::post('/post', [PostController::class, 'store'])->name('posts.store');
+    Route::get('/post/{post}', [PostController::class, 'show'])->name('posts.show');
+    Route::post('/post/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/post/{post}/interact', [InteractionController::class, 'store'])->name('posts.interact');
+    Route::post('/comments/{comment}/answers', [AnswerController::class, 'store'])->name('answers.store');
+
+    Route::get('/profile', [ProfileController::class, 'view'])->name('Profile.view');
+    Route::get('/profile/settings', [ProfileController::class, 'edit'])->name('Profile.edit');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('Profile.update');
+});
 
 Route::middleware('guest')->group(function () {
     # ROLE: User
@@ -44,11 +50,14 @@ Route::middleware('guest')->group(function () {
     Route::post('/login/privilege', [AdminService\Authentication\LoginController::class, 'login'])->name('admin.authentication.login.action');
 });
 
+Route::get('/verified', [AuthService\VerifiedEmailController::class, 'verifiedEmail'])->name('authentication.verified.action');
+Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');
+
 Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
     Route::get('/dashboard', [AdminService\Dashboard::class, 'index'])->name('admin.dashboard');
 
-    route::prefix('master')->group(function () {
-        route::prefix('category')->group(function () {
+    Route::prefix('master')->group(function () {
+        Route::prefix('category')->group(function () {
             Route::get('/', [AdminService\Master\CategoryController::class, 'index'])->name('admin.master.category');
             Route::post('/', [AdminService\Master\CategoryController::class, 'store'])->name('admin.master.category.store');
             Route::get('/create', [AdminService\Master\CategoryController::class, 'create'])->name('admin.master.category.create');
@@ -57,7 +66,7 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
             Route::delete('/{category}', [AdminService\Master\CategoryController::class, 'destroy'])->name('admin.master.category.destroy');
         });
 
-        route::prefix('role')->group(function () {
+        Route::prefix('role')->group(function () {
             Route::get('/', [AdminService\Master\RoleController::class, 'index'])->name('admin.master.role');
             Route::post('/', [AdminService\Master\RoleController::class, 'store'])->name('admin.master.role.store');
             Route::get('/create', [AdminService\Master\RoleController::class, 'create'])->name('admin.master.role.create');
@@ -66,22 +75,21 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
             Route::delete('/{role}', [AdminService\Master\RoleController::class, 'destroy'])->name('admin.master.role.destroy');
         });
     });
+
+
+    Route::prefix('user')->group(function () {
+        Route::get('/', [AdminService\User\UserController::class, 'index'])->name('admin.user');
+        Route::post('/', [AdminService\User\UserController::class, 'store'])->name('admin.user.store');
+        Route::get('/create', [AdminService\User\UserController::class, 'create'])->name('admin.user.create');
+        Route::get('/{user}', [AdminService\User\UserController::class, 'show'])->name('admin.user.show');
+        Route::get('/{user}/edit', [AdminService\User\UserController::class, 'edit'])->name('admin.user.edit');
+        Route::put('/{user}', [AdminService\User\UserController::class, 'update'])->name('admin.user.update');
+        Route::delete('/{user}', [AdminService\User\UserController::class, 'destroy'])->name('admin.user.destroy');
+
+        Route::post('/impersonate/{user}', [AdminService\Authentication\ImpersonateController::class, 'action'])->name('admin.user.impersonate');
+        Route::post('/forget-password/{user}', [AdminService\Authentication\ForgetPasswordController::class, 'sendLinkToMail'])->name('admin.user.forget-password');
+        Route::post('/verified-email/{user}', [AdminService\Authentication\VerifiedEmailController::class, 'sendLinkToMail'])->name('admin.user.verified-email');
+        Route::patch('/changed-email/{user}', [AdminService\Authentication\ChangedEmailController::class, 'action'])->name('admin.user.change-email');
+        Route::patch('/banned/{user}', [AdminService\Authentication\BannedController::class, 'action'])->name('admin.user.banned');
+    });
 });
-
-Route::middleware(UserMiddleware::class)->group(function () {
-    # PAGE: User
-
-    Route::post('/post', [PostController::class, 'store'])->name('posts.store');
-
-
-    Route::get('/post/{post}', [PostController::class, 'show'])->name('posts.show');
-    Route::post('/post/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
-
-    Route::post('/posts/{post}/interact', [InteractionController::class, 'store'])->name('posts.interact');
-
-    Route::post('/comments/{comment}/answers', [AnswerController::class, 'store'])->name('answers.store');
-    Route::get('/profile', [ProfileController::class, 'view'])->name('Profile.view');
-    Route::get('/profile/settings', [ProfileController::class, 'edit'])->name('Profile.edit');
-    Route::put('/profile/update', [ProfileController::class, 'update'])->name('Profile.update');
-});
-Route::post('/logout', AuthService\LogoutController::class)->name('authentication.logout');

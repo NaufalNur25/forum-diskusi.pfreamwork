@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -28,7 +28,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id'
+        'role_id',
+        'is_blocked'
     ];
 
     /**
@@ -51,7 +52,40 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_blocked' => 'boolean',
         ];
+    }
+
+    public static array $statusTexts = [
+        'banned' => 'Banned',
+        'unverified' => 'Unverified',
+        'safe' => 'Safe'
+    ];
+
+    protected function status(): Attribute
+    {
+        $status = self::$statusTexts['safe'];
+
+        if (! $this->email_verified_at) {
+            $status = self::$statusTexts['unverified'];
+        }
+
+        if ($this->is_blocked) {
+            $status = self::$statusTexts['banned'];
+        }
+
+        return Attribute::make(
+            get: fn($value, $attributes) =>
+            $attributes['status'] ?? $status
+        );
+    }
+
+    protected function postsCount(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value, $attributes) =>
+            $attributes['posts_count'] ?? $this->posts()->count()
+        );
     }
 
     /**

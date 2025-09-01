@@ -9,15 +9,7 @@
                         href="{{ route('admin.dashboard') }}"
                         class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600"
                     >
-                        <svg
-                            class="w-4 h-4 mr-2"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                        >
-                            <path
-                                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
-                            ></path>
-                        </svg>
+                        <x-gmdi-home class="w-4 h-4 mr-1" />
                         Dashboard
                     </a>
                 </li>
@@ -26,17 +18,9 @@
                         href="{{ route('admin.master.role') }}"
                         class="flex items-center"
                     >
-                        <svg
-                            class="w-6 h-6 text-gray-400"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                clip-rule="evenodd"
-                            ></path>
-                        </svg>
+                        <x-gmdi-arrow-forward-ios-r
+                            class="w-4 h-4 text-gray-400"
+                        />
                         <span
                             class="ml-1 text-sm font-medium text-gray-500 hover:text-blue-600 md:ml-2"
                         >
@@ -46,17 +30,9 @@
                 </li>
                 <li>
                     <div class="flex items-center">
-                        <svg
-                            class="w-6 h-6 text-gray-400"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                clip-rule="evenodd"
-                            ></path>
-                        </svg>
+                        <x-gmdi-arrow-forward-ios-r
+                            class="w-4 h-4 text-gray-400"
+                        />
                         <span
                             class="ml-1 text-sm font-medium text-gray-500 md:ml-2"
                         >
@@ -105,17 +81,7 @@
 
                     @error('name')
                         <p class="mt-2 text-sm text-red-600">
-                            <svg
-                                class="inline w-4 h-4 mr-1"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                            >
-                                <path
-                                    fill-rule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                    clip-rule="evenodd"
-                                ></path>
-                            </svg>
+                            <x-gmdi-info class="inline w-4 h-4 mr-1" />
                             {{ $message }}
                         </p>
                     @enderror
@@ -126,19 +92,7 @@
                 >
                     <div class="text-sm text-gray-500">
                         <span class="inline-flex items-center">
-                            <svg
-                                class="w-4 h-4 mr-1"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                ></path>
-                            </svg>
+                            <x-gmdi-info-o class="w-4 h-4 mr-1" />
                             Field with mark
                             <span class="text-red-500 font-medium ml-1">*</span>
                             required fields
@@ -150,19 +104,7 @@
                             href="{{ route('admin.master.role') }}"
                             class="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 bg-white rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
                         >
-                            <svg
-                                class="w-4 h-4 mr-2"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12"
-                                ></path>
-                            </svg>
+                            <x-gmdi-clear class="w-4 h-4 mr-2" />
                             Cancle
                         </a>
 
@@ -170,19 +112,7 @@
                             type="submit"
                             class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
                         >
-                            <svg
-                                class="w-4 h-4 mr-2"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M5 13l4 4L19 7"
-                                ></path>
-                            </svg>
+                            <x-gmdi-check class="w-4 h-4 mr-2" />
                             Update Role
                         </button>
                     </div>
@@ -192,17 +122,7 @@
 
         <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div class="flex items-start">
-                <svg
-                    class="w-5 h-5 text-blue-400 mt-0.5 mr-3"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                >
-                    <path
-                        fill-rule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                        clip-rule="evenodd"
-                    ></path>
-                </svg>
+                <x-gmdi-info class="w-5 h-5 text-blue-400 mt-0.5 mr-3" />
                 <div>
                     <h3 class="text-sm font-medium text-blue-800">
                         Role Information
@@ -238,17 +158,7 @@
             class="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg shadow-lg z-50"
         >
             <div class="flex items-center">
-                <svg
-                    class="w-4 h-4 mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                >
-                    <path
-                        fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                        clip-rule="evenodd"
-                    ></path>
-                </svg>
+                <x-gmdi-cancel-r class="w-4 h-4 mr-2" />
                 {{ session('error') }}
             </div>
         </div>

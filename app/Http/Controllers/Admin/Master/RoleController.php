@@ -6,13 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Master\Role\StoreRoleRequest;
 use App\Http\Requests\Admin\Master\Role\UpdateRoleRequest;
 use App\Models\Role;
-use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::query()->paginate(5);
+        $query = Role::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereRaw('LOWER(name) LIKE ?', ["%".strtolower($search)."%"]);
+        }
+
+        $roles = $query->latest('updated_at')->paginate(5);
 
         return view('Admin.Master.Role.index', compact('roles'));
     }
@@ -27,7 +34,7 @@ class RoleController extends Controller
         Role::create($request->all());
 
         return redirect()
-            ->route('admin.master.role', status: Response::HTTP_MOVED_PERMANENTLY)
+            ->route('admin.master.role')
             ->with('success', 'Successfully create new role');
     }
 
@@ -42,7 +49,7 @@ class RoleController extends Controller
         $role->update($request->all());
 
         return redirect()
-            ->route('admin.master.role', status: Response::HTTP_MOVED_PERMANENTLY)
+            ->route('admin.master.role')
             ->with('success', 'Successfully updated role');
     }
 
@@ -51,7 +58,7 @@ class RoleController extends Controller
         $role->delete();
 
         return redirect()
-            ->route('admin.master.role', status: Response::HTTP_MOVED_PERMANENTLY)
+            ->route('admin.master.role')
             ->with('success', 'Successfully deleted role');
     }
 }

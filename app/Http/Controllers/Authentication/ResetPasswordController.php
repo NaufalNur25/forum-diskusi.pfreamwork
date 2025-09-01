@@ -7,11 +7,9 @@ use App\Http\Requests\Authentication\ResetPasswordRequest;
 use App\Jobs\SendResetPasswordSuccessEmail;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Password;
 
@@ -28,7 +26,7 @@ class ResetPasswordController extends Controller
             now()->diffInMinutes($passwordReset->created_at) > config('auth.passwords.users.expire')
         ) {
             return redirect()
-                ->route('home', status: Response::HTTP_FOUND)
+                ->route('home')
                 ->with('error', 'The password reset token is invalid or has expired.');
         }
 
@@ -67,7 +65,7 @@ class ResetPasswordController extends Controller
         SendResetPasswordSuccessEmail::dispatch($user);
 
         return redirect()
-            ->route('authentication.login', status: Response::HTTP_MOVED_PERMANENTLY)
+            ->route('authentication.login')
             ->with('success', 'Your password has been reset successfully. Please log in with your new password.');
     }
 }

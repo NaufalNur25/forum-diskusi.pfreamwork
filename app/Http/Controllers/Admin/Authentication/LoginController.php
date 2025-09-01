@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Authentication\LoginRequest;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -37,7 +36,7 @@ class LoginController extends Controller
                 Auth::login($user, $remember);
 
                 return redirect()
-                    ->route('admin.dashboard', status: Response::HTTP_MOVED_PERMANENTLY);
+                    ->route('admin.dashboard');
             }
         }
 

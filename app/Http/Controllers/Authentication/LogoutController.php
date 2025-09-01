@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Authentication;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class LogoutController extends Controller
@@ -19,12 +18,12 @@ class LogoutController extends Controller
             $request->session()->regenerateToken();
 
             return redirect()
-                ->route('authentication.login', status: Response::HTTP_MOVED_PERMANENTLY)
+                ->route('authentication.login')
                 ->with('success', 'Successfully logout.');
         }
 
         return redirect()
-            ->route('authentication.login', status: Response::HTTP_FOUND)
+            ->route('authentication.login')
             ->with('error', 'Sorry, try to login/register first.');
     }
 }
