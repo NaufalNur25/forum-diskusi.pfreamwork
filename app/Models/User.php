@@ -29,7 +29,10 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
-        'is_blocked'
+        'is_blocked',
+        'photo',
+        'biograph',
+        'description'
     ];
 
     /**

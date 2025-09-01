@@ -129,24 +129,6 @@
                         <x-gmdi-edit-note-o class="w-4 h-4 mr-2" />
                         Edit User
                     </a>
-                    @if ($user->id !== auth()->id())
-                        <form
-                            action="{{ route('admin.user.destroy', $user) }}"
-                            method="POST"
-                            onsubmit="return confirm('Are you sure you want to delete this user?')"
-                            class="inline"
-                        >
-                            @csrf
-                            @method('DELETE')
-                            <button
-                                type="submit"
-                                class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                            >
-                                <x-gmdi-delete-o class="w-4 h-4 mr-2" />
-                                Delete User
-                            </button>
-                        </form>
-                    @endif
                 </div>
             </div>
         </div>

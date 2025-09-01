@@ -83,7 +83,7 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
         Route::get('/create', [AdminService\User\UserController::class, 'create'])->name('admin.user.create');
         Route::get('/{user}', [AdminService\User\UserController::class, 'show'])->name('admin.user.show');
         Route::get('/{user}/edit', [AdminService\User\UserController::class, 'edit'])->name('admin.user.edit');
-        Route::put('/{user}', [AdminService\User\UserController::class, 'update'])->name('admin.user.update');
+        Route::post('/{user}', [AdminService\User\UserController::class, 'update'])->name('admin.user.update');
         Route::delete('/{user}', [AdminService\User\UserController::class, 'destroy'])->name('admin.user.destroy');
 
         Route::get('/post/{post}', [PostController::class, 'show'])->name('admin.user.post.show');

@@ -207,7 +207,7 @@
                                 @endif
 
                                 <div class="absolute -bottom-1 -right-1">
-                                    @if ($user->status)
+                                    @if (! $user->is_blocked)
                                         <span
                                             class="flex items-center justify-center w-6 h-6 bg-green-500 rounded-full border-2 border-white shadow-sm"
                                         >
@@ -278,10 +278,10 @@
                                             <div
                                                 class="text-lg font-bold text-gray-900"
                                             >
-                                                {{ $user->created_at ? $user->created_at->diffForHumans() : 'N/A' }}
+                                                {{ $user->status }}
                                             </div>
                                             <div class="text-xs text-gray-500">
-                                                Days ago
+                                                Status
                                             </div>
                                         </div>
                                     </div>
@@ -317,24 +317,6 @@
                                 >
                                     <x-gmdi-edit-note-o class="w-4 h-4" />
                                 </a>
-                                @if ($user->id !== auth()->id())
-                                    <form
-                                        action="{{ route('admin.user.destroy', $user) }}"
-                                        method="POST"
-                                        onsubmit="return confirm('Are you sure you want to delete this user?')"
-                                        class="inline"
-                                    >
-                                        @csrf
-                                        @method('DELETE')
-                                        <button
-                                            type="submit"
-                                            class="inline-flex items-center justify-center w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                                            title="Delete User"
-                                        >
-                                            <x-gmdi-delete-o class="w-4 h-4" />
-                                        </button>
-                                    </form>
-                                @endif
                             </div>
                         </div>
 

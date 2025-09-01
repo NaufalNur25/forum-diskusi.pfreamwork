@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\User\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -63,15 +65,34 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('Admin.User.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $validatedData = $request->validated();
+        if (empty($validatedData['password'])) {
+            unset($validatedData['password']);
+        }
+
+        if ($request->hasFile('photo')) {
+            if ($user->photo) {
+                Storage::disk('public')->delete($user->photo);
+            }
+
+            $path = $request->file('photo')->store('profile-photos', 'public');
+
+            $validatedData['photo'] = $path;
+        }
+
+        $user->update($validatedData);
+
+        return redirect()
+            ->route('admin.user.show', $user)
+            ->with('success', 'Successfully updated user.');
     }
 
     /**
