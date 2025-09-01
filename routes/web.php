@@ -86,7 +86,8 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
         Route::put('/{user}', [AdminService\User\UserController::class, 'update'])->name('admin.user.update');
         Route::delete('/{user}', [AdminService\User\UserController::class, 'destroy'])->name('admin.user.destroy');
 
-        Route::post('/impersonate/{user}', [AdminService\Authentication\ImpersonateController::class, 'action'])->name('admin.user.impersonate');
+        Route::get('/post/{post}', [PostController::class, 'show'])->name('admin.user.post.show');
+
         Route::post('/forget-password/{user}', [AdminService\Authentication\ForgetPasswordController::class, 'sendLinkToMail'])->name('admin.user.forget-password');
         Route::post('/verified-email/{user}', [AdminService\Authentication\VerifiedEmailController::class, 'sendLinkToMail'])->name('admin.user.verified-email');
         Route::patch('/changed-email/{user}', [AdminService\Authentication\ChangedEmailController::class, 'action'])->name('admin.user.change-email');

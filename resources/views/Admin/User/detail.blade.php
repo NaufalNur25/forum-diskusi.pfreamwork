@@ -270,7 +270,7 @@
                                             </p>
                                         </div>
                                         <a
-                                            href="{{ route('posts.show', $post) }}"
+                                            href="{{ route('admin.user.post.show', $post) }}"
                                             class="text-blue-600 hover:text-blue-800"
                                         >
                                             <x-gmdi-arrow-forward
@@ -507,50 +507,6 @@
                                     </form>
                                 </div>
                             @endif
-
-                            <!-- Login as User (Super Admin only) -->
-                            @if (auth()->user()->isAdmin() && $user->id !== auth()->id())
-                                <div
-                                    class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-                                >
-                                    <div class="flex items-center space-x-3">
-                                        <div
-                                            class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center"
-                                        >
-                                            <x-gmdi-login
-                                                class="w-5 h-5 text-indigo-600"
-                                            />
-                                        </div>
-                                        <div>
-                                            <h3
-                                                class="text-sm font-medium text-gray-900"
-                                            >
-                                                Login as User
-                                            </h3>
-                                            <p class="text-xs text-gray-500">
-                                                Impersonate this user
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <form
-                                        action="{{ route('admin.user.impersonate', $user) }}"
-                                        method="POST"
-                                        onsubmit="return confirm('Login as {{ $user->name }}? You can return to your account later.')"
-                                        class="inline"
-                                    >
-                                        @csrf
-                                        <button
-                                            type="submit"
-                                            class="inline-flex items-center justify-center min-w-[100px] px-3 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                        >
-                                            <x-gmdi-person
-                                                class="w-4 h-4 mr-1"
-                                            />
-                                            Login
-                                        </button>
-                                    </form>
-                                </div>
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -601,9 +557,6 @@
                                 </div>
                                 <div class="text-lg font-bold text-gray-900">
                                     {{ $user->created_at ? $user->created_at->diffForHumans() : 'N/A' }}
-                                </div>
-                                <div class="text-xs text-gray-500">
-                                    Days ago
                                 </div>
                             </div>
                         </div>
