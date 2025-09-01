@@ -55,8 +55,8 @@ Route::post('/logout', AuthService\LogoutController::class)->name('authenticatio
 Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
     Route::get('/dashboard', [AdminService\Dashboard::class, 'index'])->name('admin.dashboard');
 
-    route::prefix('master')->group(function () {
-        route::prefix('category')->group(function () {
+    Route::prefix('master')->group(function () {
+        Route::prefix('category')->group(function () {
             Route::get('/', [AdminService\Master\CategoryController::class, 'index'])->name('admin.master.category');
             Route::post('/', [AdminService\Master\CategoryController::class, 'store'])->name('admin.master.category.store');
             Route::get('/create', [AdminService\Master\CategoryController::class, 'create'])->name('admin.master.category.create');
@@ -65,7 +65,7 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
             Route::delete('/{category}', [AdminService\Master\CategoryController::class, 'destroy'])->name('admin.master.category.destroy');
         });
 
-        route::prefix('role')->group(function () {
+        Route::prefix('role')->group(function () {
             Route::get('/', [AdminService\Master\RoleController::class, 'index'])->name('admin.master.role');
             Route::post('/', [AdminService\Master\RoleController::class, 'store'])->name('admin.master.role.store');
             Route::get('/create', [AdminService\Master\RoleController::class, 'create'])->name('admin.master.role.create');
@@ -73,5 +73,16 @@ Route::prefix('admin')->middleware(AdminMiddleware::class)->group(function () {
             Route::put('/{role}', [AdminService\Master\RoleController::class, 'update'])->name('admin.master.role.update');
             Route::delete('/{role}', [AdminService\Master\RoleController::class, 'destroy'])->name('admin.master.role.destroy');
         });
+    });
+
+
+    Route::prefix('user')->group(function () {
+        Route::get('/', [AdminService\User\UserController::class, 'index'])->name('admin.user');
+        Route::post('/', [AdminService\User\UserController::class, 'store'])->name('admin.user.store');
+        Route::get('/create', [AdminService\User\UserController::class, 'create'])->name('admin.user.create');
+        Route::get('/{user}', [AdminService\User\UserController::class, 'show'])->name('admin.user.show');
+        Route::get('/{user}/edit', [AdminService\User\UserController::class, 'edit'])->name('admin.user.edit');
+        Route::put('/{user}', [AdminService\User\UserController::class, 'update'])->name('admin.user.update');
+        Route::delete('/{user}', [AdminService\User\UserController::class, 'destroy'])->name('admin.user.destroy');
     });
 });

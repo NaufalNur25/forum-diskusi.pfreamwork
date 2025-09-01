@@ -115,11 +115,12 @@
                             User
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-center">
-                            <button
+                            <a
+                                href="{{ route('admin.user') }}"
                                 class="inline-flex items-center justify-center w-8 h-8 bg-green-500 hover:bg-green-600 text-white rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                             >
                                 <x-gmdi-search class="w-6 h-6" />
-                            </button>
+                            </a>
                         </td>
                     </tr>
                     <tr
